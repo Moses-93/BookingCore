@@ -22,6 +22,8 @@ class Date(Base):
     free = Column(Boolean, default=True, index=True)
     del_time = Column(DateTime, nullable=False)
 
+    bookings = relationship("Booking", back_populates="date", lazy="joined")
+
     def __str__(self):
         return self.date.strftime("%Y-%m-%d")
 
@@ -49,7 +51,7 @@ class Booking(Base):
     date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"))
 
     name = relationship("User", lazy="joined")
-    date = relationship("Date", lazy="joined")
+    date = relationship("Date", back_populates="bookings", lazy="joined")
     service = relationship("Service", lazy="joined")
 
     def __str__(self):
