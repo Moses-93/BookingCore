@@ -19,6 +19,7 @@ boto3 = "^1.35.92"
 python-dotenv = "^1.0.1"
 black = "^24.10.0"
 pydantic-settings = "2.7.1"
+psycopg2-binary = "^2.9.10"
 
 
 [build-system]
