@@ -17,8 +17,8 @@ Base = declarative_base()
 
 class Date(Base):
     __tablename__ = "dates"
-    id = Column(Integer, primary_key=True)
-    date = Column(Date, nullable=False)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date = Column(Date, nullable=False, unique=True)
     free = Column(Boolean, default=True, index=True)
     del_time = Column(DateTime, nullable=False)
 
@@ -50,7 +50,7 @@ class Booking(Base):
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"))
     date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"))
 
-    name = relationship("User", lazy="joined")
+    user = relationship("User", back_populates="bookings", lazy="joined")
     date = relationship("Date", back_populates="bookings", lazy="joined")
     service = relationship("Service", lazy="joined")
 
@@ -64,7 +64,9 @@ class User(Base):
     name = Column(String, nullable=False)
     username = Column(String, nullable=True)
     chat_id = Column(Integer, index=True, nullable=False, unique=True)
-    admin = Column(Boolean, nullable=False, default=False)
+    role = Column(String(10), nullable=True, default="user")
+
+    bookings = relationship("Booking", back_populates="date", lazy="joined")
 
     def __str__(self):
         return f"Name: {self.name} | UserID: {self.user_id}"
