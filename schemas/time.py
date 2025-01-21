@@ -9,7 +9,7 @@ class TimeBase(BaseModel):
 
 
 class TimeCreate(BaseModel):
-    date_id:int
+    date_id: int
 
 
 class TimeResponse(TimeBase):
