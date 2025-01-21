@@ -43,10 +43,12 @@ class Booking(Base):
     __tablename__ = "bookings"
     id = Column(Integer, primary_key=True)
     active = Column(Boolean, default=True, index=True)
-    time = Column(Time, nullable=False)
     reminder_hours = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=func.now())
-    name_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
+    time_id = Column(
+        Integer, ForeignKey("times.id", ondelete="CASCADE"), nullable=False
+    )
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"))
     date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"))
 
@@ -66,7 +68,19 @@ class User(Base):
     chat_id = Column(Integer, index=True, nullable=False, unique=True)
     role = Column(String(10), nullable=True, default="user")
 
-    bookings = relationship("Booking", back_populates="date", lazy="joined")
+    bookings = relationship("Booking", back_populates="user", lazy="joined")
 
     def __str__(self):
-        return f"Name: {self.name} | UserID: {self.user_id}"
+        return f"Name: {self.name} | UserID: {self.chat_id}"
+
+
+class Time(Base):
+    __tablename__ = "times"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    active = Column(Boolean, default=True, index=True)
+    time = Column(Time, nullable=False)
+    date_id = Column(Integer, ForeignKey("dates.id"), nullable=False)
+    bookings = relationship("Booking", back_populates="time", lazy="joined")
+
+    def __str__(self):
+        return f"Час: {self.time}"
