@@ -10,6 +10,7 @@ from sqlalchemy import (
     ForeignKey,
     Date,
     func,
+    JSON,
 )
 
 Base = declarative_base()
@@ -45,9 +46,7 @@ class Booking(Base):
     active = Column(Boolean, default=True, index=True)
     reminder_hours = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=func.now())
-    time_id = Column(
-        Integer, ForeignKey("times.id", ondelete="CASCADE"), nullable=True
-    )
+    time_id = Column(Integer, ForeignKey("times.id", ondelete="CASCADE"), nullable=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"))
     date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"))
@@ -80,7 +79,22 @@ class Time(Base):
     active = Column(Boolean, default=True, index=True)
     time = Column(Time, nullable=False)
     date_id = Column(Integer, ForeignKey("dates.id"), nullable=False)
-    bookings = relationship("Booking", back_populates="time", lazy="joined")
 
     def __str__(self):
         return f"Час: {self.time}"
+
+
+class BusinessInfo(Base):
+    __tablename__ = "business_info"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    address = Column(String(60), nullable=False)
+    phone = Column(String(13), nullable=False)
+    description = Column(String, nullable=True)
+    working_hours = Column(JSON, nullable=False)
+    google_maps_url = Column(String, nullable=True)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    def __str__(self):
+        return f"Назва: {self.name} | Адреса: {self.address} | Телефон: {self.phone}"
