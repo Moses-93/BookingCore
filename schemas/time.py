@@ -5,10 +5,10 @@ from datetime import time
 
 class TimeBase(BaseModel):
     time: time
+
+
+class TimeCreate(TimeBase):
     active: Optional[bool] = Field(default=True)
-
-
-class TimeCreate(BaseModel):
     date_id: int
 
 
