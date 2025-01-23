@@ -14,8 +14,8 @@ class ServiceCreate(ServiceBase):
 
 
 class ServiceUpdate(ServiceBase):
-    name: Optional[str] = Field(..., min_length=2, max_length=50)
-    price: Optional[int] = Field(..., ge=0)
+    name: Optional[str] = Field(None, min_length=2, max_length=50)
+    price: Optional[int] = Field(None, ge=0)
     duration: Optional[timedelta]
 
 
@@ -23,4 +23,4 @@ class ServiceResponse(ServiceBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
