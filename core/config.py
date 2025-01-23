@@ -24,6 +24,14 @@ class Settings(BaseSettings):
         return self._secret_fetcher.fetch_secret("BookEasyBot/telegram_tokens")
 
     @property
+    def _api_token(self):
+        return self._secret_fetcher.fetch_secret("dev/BookEasyBot/API_TOKEN")
+
+    @property
+    def api_token(self):
+        return self._api_token.get("API_TOKEN")
+
+    @property
     def telegram_main_token(self):
         return self._telegram_secrets.get("main_bot_token")
 
@@ -31,10 +39,9 @@ class Settings(BaseSettings):
     def telegram_sender_token(self):
         return self._telegram_secrets.get("sender_bot_token")
 
-    @property
-    def database_url(self):
+    def database_url(self, driver="asyncpg"):
         db = self._database_secrets
-        return f"postgresql+asyncpg://{db.get("username")}:{db.get("password")}@{db.get("host")}:{db.get("port")}/{db.get("dbname")}"
+        return f"postgresql+{driver}://{db.get("username")}:{db.get("password")}@{db.get("host")}:{db.get("port")}/{db.get("dbname")}"
 
 
 settings = Settings()
