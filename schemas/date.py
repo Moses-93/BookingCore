@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel, Field
 
-from datetime import date
+from datetime import date, datetime
 
 
 class DateBase(BaseModel):
@@ -10,11 +10,11 @@ class DateBase(BaseModel):
 
 
 class DateCreate(DateBase):
-    pass
+    del_time: datetime
 
 
 class DateResponse(DateBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
