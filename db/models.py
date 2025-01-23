@@ -91,7 +91,7 @@ class BusinessInfo(Base):
     address = Column(String(60), nullable=False)
     phone = Column(String(13), nullable=False)
     description = Column(String, nullable=True)
-    working_hours = Column(JSON, nullable=False)
+    working_hours = Column(String, nullable=False)
     google_maps_url = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
