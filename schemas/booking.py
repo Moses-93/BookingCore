@@ -14,7 +14,7 @@ class BookingBase(BaseModel):
 
 
 class BookingCreate(BookingBase):
-    name_id: int
+    time: str
     service_id: int
     date_id: int
 
@@ -31,4 +31,4 @@ class BookingResponse(BookingBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
