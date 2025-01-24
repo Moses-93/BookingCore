@@ -1,22 +1,28 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from db.crud import crud
 from db.models import Service, User
 from schemas import service
 from decorators.permissions import requires_role
 from core.dependencies import verify_user, get_db
+from utils.validators import ensure_resource_exists
 
 
 router = APIRouter(prefix="/services", tags=["services"])
 
 
-@router.get("/", response_model=list[service.ServiceResponse])
+@router.get(
+    "/", response_model=list[service.ServiceResponse], status_code=status.HTTP_200_OK
+)
 @requires_role(["admin", "user"])
 async def get_services(
-    db: AsyncSession = Depends(get_db), user: User = Depends(verify_user)
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(verify_user),
 ):
-    services = await crud.read(model=Service, session=db)
-    return services
+    result = await crud.read(model=Service, session=db)
+    ensure_resource_exists(result)
+    return result
 
 
 @router.post(
@@ -35,14 +41,11 @@ async def create_service(
         price=service.price,
         duration=service.duration,
     )
-    if result is None:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to create service"
-        )
+    ensure_resource_exists(result, 400, "Invalid data provided to create the service")
     return result
 
 
-@router.patch("/{service_id}", status_code=status.HTTP_200_OK)
+@router.patch("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
 @requires_role(["admin"])
 async def update_service(
     service_id: int,
@@ -51,25 +54,17 @@ async def update_service(
     user: User = Depends(verify_user),
 ):
     update_service = service.model_dump(exclude_unset=True)
-    if not update_service:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No data provided for update",
-        )
+
     result = await crud.update(
         model=Service,
         session=db,
         expressions=(Service.id == service_id),
-        **update_service
+        **update_service,
     )
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Service not found"
-        )
-    return {"detail": "Service updated successfully"}
+    ensure_resource_exists(result)
 
 
-@router.delete("/{service_id}", status_code=status.HTTP_200_OK)
+@router.delete("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
 @requires_role(["admin"])
 async def delete_service(
     service_id: int,
@@ -77,8 +72,4 @@ async def delete_service(
     db: AsyncSession = Depends(get_db),
 ):
     result = await crud.delete(model=Service, session=db, id=service_id)
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Date not found"
-        )
-    return {"detail": "Date deleted successfully"}
+    ensure_resource_exists(result)
