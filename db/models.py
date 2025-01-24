@@ -2,6 +2,7 @@ from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import (
     Boolean,
     Interval,
+    Text,
     Time,
     Integer,
     Column,
@@ -68,6 +69,7 @@ class User(Base):
     role = Column(String(10), nullable=True, default="user")
 
     bookings = relationship("Booking", back_populates="user", lazy="joined")
+    feedbacks = relationship("Feedback", back_populates="user", lazy="joined")
 
     def __str__(self):
         return f"Name: {self.name} | UserID: {self.chat_id}"
@@ -98,3 +100,15 @@ class BusinessInfo(Base):
 
     def __str__(self):
         return f"Назва: {self.name} | Адреса: {self.address} | Телефон: {self.phone}"
+
+
+class Feedback(Base):
+    __tablename__ = "feedbacks"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    rating = Column(Integer, nullable=True)
+    comment = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=func.now())
+
+    user = relationship("User", back_populates="feedbacks", lazy="joined")
