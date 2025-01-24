@@ -35,7 +35,9 @@ class Service(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False, unique=True)
     price = Column(Integer, nullable=False)
-    duration = Column(Interval, nullable=False)
+    active = Column(Boolean, default=True, index=True)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     def __str__(self):
         return f"{self.name}: {self.price} грн."
