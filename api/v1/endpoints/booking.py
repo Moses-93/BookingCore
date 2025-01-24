@@ -1,5 +1,5 @@
 import logging
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from datetime import datetime
@@ -9,6 +9,7 @@ from decorators.permissions import requires_role
 from schemas import booking
 from db.models import Booking, User
 from db.crud import crud
+from utils.validators import ensure_resource_exists
 
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
@@ -23,7 +24,6 @@ async def create_booking(
     user: User = Depends(verify_user),
 ):
     (user,) = user
-    logger.info(f"User:{user}, type:{type(user)}")
     result = await crud.create(
         model=Booking,
         session=db,
@@ -32,6 +32,5 @@ async def create_booking(
         service_id=booking.service_id,
         date_id=booking.date_id,
     )
-    if result is None:
-        raise HTTPException(status_code=400, detail="Failed to create booking")
+    ensure_resource_exists(result, status_code=400, message="Failed to create booking")
     return result
