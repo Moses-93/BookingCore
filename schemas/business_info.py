@@ -1,6 +1,6 @@
 from datetime import datetime
-from typing import Optional, Dict
-from pydantic import BaseModel, Field, HttpUrl
+from typing import Optional
+from pydantic import BaseModel, Field, HttpUrl, model_validator
 
 
 class BusinessInfoBase(BaseModel):
@@ -26,6 +26,12 @@ class BusinessInfoUpdate(BusinessInfoBase):
     )
     google_maps_url: Optional[HttpUrl] = Field(None, max_length=200)
     description: Optional[str] = Field(None, min_length=10, max_length=200)
+
+    @model_validator(mode="before")
+    def validate_data(cls, values):
+        if not any(values.values()):
+            raise ValueError("No fields provided for update")
+        return values
 
 
 class BusinessInfoResponse(BusinessInfoBase):
