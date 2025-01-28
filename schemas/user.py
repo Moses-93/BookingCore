@@ -1,14 +1,16 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, Field
+from .master import MasterResponse
 
 
 class UserBase(BaseModel):
     name: str
     chat_id: int = Field(..., ge=2)
+    role: Optional[str]
 
 
 class UserCreate(UserBase):
-    role: Optional[str]
+    pass
 
 
 class UserUpdate(UserBase):
@@ -19,7 +21,7 @@ class UserUpdate(UserBase):
 
 class UserResponse(UserBase):
     id: int
-    role: str
+    masters: List[MasterResponse]
 
     class Config:
         from_attributes = True
