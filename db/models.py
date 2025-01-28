@@ -90,7 +90,9 @@ class Time(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     active = Column(Boolean, default=True, index=True)
     time = Column(Time, nullable=False)
-    date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True)
+    date_id = Column(
+        Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True
+    )
 
     bookings = relationship("Booking", back_populates="time")
 
@@ -106,9 +108,14 @@ class BusinessInfo(Base):
     phone = Column(String(13), nullable=False)
     description = Column(String, nullable=True)
     working_hours = Column(String, nullable=False)
-    google_maps_url = Column(String, nullable=True)
+    google_maps_link = Column(String, nullable=True)
+    telegram_link = Column(String, nullable=True)
+    instagram_link = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+    master_id = Column(
+        Integer, ForeignKey("masters.id", ondelete="CASCADE"), index=True
+    )
 
     def __str__(self):
         return f"Назва: {self.name} | Адреса: {self.address} | Телефон: {self.phone}"
