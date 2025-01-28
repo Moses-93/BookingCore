@@ -90,7 +90,7 @@ class Time(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     active = Column(Boolean, default=True, index=True)
     time = Column(Time, nullable=False)
-    date_id = Column(Integer, ForeignKey("dates.id"), nullable=False)
+    date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True)
 
     bookings = relationship("Booking", back_populates="time")
 
