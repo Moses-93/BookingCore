@@ -21,9 +21,12 @@ Base = declarative_base()
 class Date(Base):
     __tablename__ = "dates"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    date = Column(Date, nullable=False, unique=True)
-    free = Column(Boolean, default=True, index=True)
+    date = Column(Date, nullable=False)
+    active = Column(Boolean, default=True, index=True)
     del_time = Column(DateTime, nullable=False)
+    master_id = Column(
+        Integer, ForeignKey("masters.id", ondelete="CASCADE"), index=True
+    )
 
     bookings = relationship("Booking", back_populates="date", lazy="joined")
 
