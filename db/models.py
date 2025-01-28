@@ -57,6 +57,7 @@ class Booking(Base):
     user = relationship("User", back_populates="bookings", lazy="joined")
     date = relationship("Date", back_populates="bookings", lazy="joined")
     service = relationship("Service", lazy="joined")
+    time = relationship("Time", back_populates="bookings", lazy="joined")
 
     def __str__(self):
         return f"Час: {self.time} | Створено в: {self.created_at}"
@@ -83,6 +84,8 @@ class Time(Base):
     active = Column(Boolean, default=True, index=True)
     time = Column(Time, nullable=False)
     date_id = Column(Integer, ForeignKey("dates.id"), nullable=False)
+
+    bookings = relationship("Booking", back_populates="time")
 
     def __str__(self):
         return f"Час: {self.time}"
@@ -114,3 +117,6 @@ class Feedback(Base):
     created_at = Column(DateTime, default=func.now())
 
     user = relationship("User", back_populates="feedbacks", lazy="joined")
+
+    def __str__(self):
+        return f"Ім'я: {self.user.name} | Рейтинг: {self.rating} | Коментар: {self.comment}"
