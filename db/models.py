@@ -84,8 +84,9 @@ class User(Base):
     username = Column(String, nullable=True)
     chat_id = Column(Integer, index=True, nullable=False, unique=True)
     role = Column(String(10), nullable=True, default="user")
-    master_id = Column(
-        Integer, ForeignKey("masters.id", ondelete="CASCADE"), index=True
+
+    masters = relationship(
+        "Master", secondary=user_master_association, back_populates="users"
     )
 
     bookings = relationship("Booking", back_populates="user", lazy="joined")
@@ -153,6 +154,10 @@ class Master(Base):
     phone = Column(String(13), nullable=False, unique=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    users = relationship(
+        "User", secondary=user_master_association, back_populates="masters"
+    )
 
     def __str__(self):
         return f"Майстер: {self.name} | Телефон: {self.phone}"
