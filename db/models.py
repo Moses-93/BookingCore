@@ -11,9 +11,18 @@ from sqlalchemy import (
     Date,
     func,
     Float,
+    Table,
 )
 
 Base = declarative_base()
+
+
+user_master_association = Table(
+    "user_master_association",
+    Base.metadata,
+    Column("user_id", Integer, ForeignKey("users.id"), primary_key=True),
+    Column("master_id", Integer, ForeignKey("masters.id"), primary_key=True),
+)
 
 
 class Date(Base):
