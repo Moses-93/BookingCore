@@ -1,7 +1,6 @@
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import (
     Boolean,
-    Interval,
     Text,
     Time,
     Integer,
@@ -136,3 +135,15 @@ class Feedback(Base):
 
     def __str__(self):
         return f"Ім'я: {self.user.name} | Рейтинг: {self.rating} | Коментар: {self.comment}"
+
+
+class Master(Base):
+    __tablename__ = "masters"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    phone = Column(String(13), nullable=False, unique=True)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    def __str__(self):
+        return f"Майстер: {self.name} | Телефон: {self.phone}"
