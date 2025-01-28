@@ -11,7 +11,6 @@ from sqlalchemy import (
     ForeignKey,
     Date,
     func,
-    JSON,
     Float,
 )
 
@@ -77,6 +76,9 @@ class User(Base):
     username = Column(String, nullable=True)
     chat_id = Column(Integer, index=True, nullable=False, unique=True)
     role = Column(String(10), nullable=True, default="user")
+    master_id = Column(
+        Integer, ForeignKey("masters.id", ondelete="CASCADE"), index=True
+    )
 
     bookings = relationship("Booking", back_populates="user", lazy="joined")
     feedbacks = relationship("Feedback", back_populates="user", lazy="joined")
