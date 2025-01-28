@@ -12,6 +12,7 @@ from sqlalchemy import (
     Date,
     func,
     JSON,
+    Float,
 )
 
 Base = declarative_base()
@@ -33,9 +34,12 @@ class Date(Base):
 class Service(Base):
     __tablename__ = "services"
     id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False, unique=True)
-    price = Column(Integer, nullable=False)
+    name = Column(String, nullable=False)
+    price = Column(Float, nullable=False)
     active = Column(Boolean, default=True, index=True)
+    master_id = Column(
+        Integer, ForeignKey("masters.id", ondelete="CASCADE"), index=True
+    )
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
