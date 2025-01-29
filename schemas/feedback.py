@@ -14,7 +14,7 @@ class FeedbackCreate(FeedbackBase):
 
 class FeedbackResponse(FeedbackBase):
     id: int
-    user_id: int
+    name: str
     created_at: datetime
 
     class Config:
