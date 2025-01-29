@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, status
+import logging
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.crud import crud
@@ -10,6 +11,7 @@ from utils.validators import ensure_resource_exists
 
 
 router = APIRouter(prefix="/services", tags=["services"])
+logger = logging.getLogger(__name__)
 
 
 @router.get(
