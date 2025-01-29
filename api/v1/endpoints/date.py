@@ -21,7 +21,11 @@ async def get_active_dates(
     user: User = Depends(verify_user),
     db: AsyncSession = Depends(get_db),
 ):
-    dates = await crud.read(
+    if master_id is None:
+        master = check_number_masters(user)
+        master_id = master.id
+
+    result = await crud.read(
         model=Date,
         session=db,
     )
