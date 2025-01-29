@@ -28,8 +28,13 @@ async def get_active_dates(
     result = await crud.read(
         model=Date,
         session=db,
+        master_id=master_id,
+        active=True,
     )
+    dates = result.unique().scalars().all()
+    logger.info(f"Dates fetched: {dates}")
     ensure_resource_exists(dates)
+
     return dates
 
 
@@ -42,7 +47,11 @@ async def create_date(
 ):
 
     created_date = await crud.create(
-        model=Date, session=db, date=date.date, del_time=date.del_time
+        model=Date,
+        session=db,
+        date=date.date,
+        del_time=date.del_time,
+        master_id=user.id,
     )
     ensure_resource_exists(
         created_date, status_code=400, message="Failed to create date"
