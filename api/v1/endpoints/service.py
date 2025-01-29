@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 )
 @requires_role(["admin", "user"])
 async def get_services(
+    master_id: int | None = Query(None),
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
