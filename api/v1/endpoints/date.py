@@ -1,6 +1,8 @@
 import logging
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from typing import List
+
 from core.dependencies import verify_user
 from core.dependencies import get_db
 from db.crud import crud
@@ -14,7 +16,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/dates", tags=["dates"])
 
 
-@router.get("/", response_model=list[date.DateResponse])
+@router.get("/", response_model=List[date.DateResponse])
 @requires_role(["admin", "user"])
 async def get_active_dates(
     master_id: int | None = Query(None),
