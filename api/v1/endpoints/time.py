@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.dependencies import verify_user
@@ -16,12 +16,11 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/times", tags=["times"])
 
 
-@router.get(
-    "/{date_id}", response_model=list[TimeResponse], status_code=status.HTTP_200_OK
-)
+@router.get("/", response_model=list[TimeResponse], status_code=status.HTTP_200_OK)
 @requires_role(["admin", "user"])
 async def get_times(
-    date_id: int,
+    master_id: int | None = Query(None),
+    date_id: int | None = Query(None),
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
