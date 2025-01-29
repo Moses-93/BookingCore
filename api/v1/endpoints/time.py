@@ -9,7 +9,7 @@ from db.crud import crud
 from db.models import User, Time
 from schemas.time import TimeCreate, TimeResponse
 from decorators.permissions import requires_role
-from utils.validators import ensure_resource_exists
+from utils.validators import check_number_masters, ensure_resource_exists
 
 
 logger = logging.getLogger(__name__)
@@ -24,10 +24,16 @@ async def get_times(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
+
+    if master_id is None:
+        master = check_number_masters(user)
+        master_id = master.id
+
     result = await crud.read(model=Time, session=db, date_id=date_id)
-    logger.debug(f"times for date_id {date_id}: {result}")
-    ensure_resource_exists(result)
-    return result
+    times = result.unique().scalars().all()
+    logger.debug(f"times for date_id {date_id}: {times}")
+    ensure_resource_exists(times)
+    return times
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
