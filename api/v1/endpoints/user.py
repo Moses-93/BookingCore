@@ -2,13 +2,14 @@ import logging
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import insert
 
 from typing import List
 
 from core.dependencies import get_db, verify_user
 from decorators.permissions import requires_role
 from schemas.user import UserCreate, UserResponse
-from db.models import User
+from db.models import User, user_master_association
 from db.crud import crud
 from utils.validators import ensure_resource_exists
 
@@ -28,22 +29,29 @@ async def get_user(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@requires_role(["admin"])
 async def create_user(
-    users: UserCreate,
+    user: UserCreate,
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
 ):
-    exist_fields = users.model_dump(exclude_unset=True)
-    data = await crud.create(
+
+    new_user = await crud.create(
         model=User,
         session=db,
-        **exist_fields,
+        name=user.name,
+        username=user.username,
+        chat_id=user.chat_id,
     )
     ensure_resource_exists(
-        data, status_code=400, message="Invalid data for user creation"
+        new_user, status_code=400, message="Invalid data for user creation"
     )
-    return data
+    stmt = insert(user_master_association).values(
+        user_id=new_user.id, master_id=user.master_id
+    )
+    await db.execute(stmt)
+    await db.commit()
+    logger.info(f"User {new_user.name} created successfully")
+
+    return new_user
 
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
