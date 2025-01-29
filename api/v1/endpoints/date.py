@@ -39,7 +39,7 @@ async def get_active_dates(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@requires_role(["admin"])
+@requires_role(["admin", "master"])
 async def create_date(
     date: date.DateCreate,
     user: User = Depends(verify_user),
