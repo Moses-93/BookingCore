@@ -7,7 +7,7 @@ from db.models import Service, User
 from schemas import service
 from decorators.permissions import requires_role
 from core.dependencies import verify_user, get_db
-from utils.validators import ensure_resource_exists
+from utils.validators import check_number_masters, ensure_resource_exists
 
 
 router = APIRouter(prefix="/services", tags=["services"])
@@ -22,9 +22,14 @@ async def get_services(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
-    result = await crud.read(model=Service, session=db)
-    ensure_resource_exists(result)
-    return result
+    if master_id is None:
+        master = check_number_masters(user)
+        master_id = master.id
+
+    result = await crud.read(model=Service, session=db, master_id=master_id)
+    services = result.unique().scalars().all()
+    ensure_resource_exists(services)
+    return services
 
 
 @router.post(
