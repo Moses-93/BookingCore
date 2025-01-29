@@ -1,6 +1,7 @@
 import logging
 from fastapi import HTTPException
 from functools import wraps
+from db.models import User
 
 
 logger = logging.getLogger(__name__)
@@ -11,7 +12,7 @@ def requires_role(roles: list[str]):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             logger.info("Авторизація користувача")
-            (user,) = kwargs.get("user")
+            user: User = kwargs.get("user")
             if not user:
                 logger.warning("Користувач не знайдений")
                 raise HTTPException(status_code=401, detail="User not found")
