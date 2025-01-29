@@ -5,8 +5,10 @@ from .master import MasterResponse
 
 class UserBase(BaseModel):
     name: str
+    username: Optional[str]
     chat_id: int = Field(..., ge=2)
     role: Optional[str]
+    master_id: int
 
 
 class UserCreate(UserBase):
