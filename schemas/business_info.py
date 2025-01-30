@@ -13,6 +13,8 @@ class BusinessInfoCreate(BusinessInfoBase):
     working_hours: str = Field(..., example="9:00-18:00", min_length=10, max_length=12)
     google_maps_link: Optional[str] = Field(None, max_length=200)
     description: Optional[str] = Field(None, min_length=10, max_length=200)
+    telegram_link: Optional[str] = None
+    instagram_link: Optional[str] = None
 
 
 class BusinessInfoUpdate(BusinessInfoBase):
@@ -38,7 +40,9 @@ class BusinessInfoResponse(BusinessInfoBase):
     id: int
     phone: str
     working_hours: str
-    google_maps_url: Optional[str]
+    google_maps_link: Optional[str]
+    telegram_link: Optional[str]
+    instagram_link: Optional[str]
     description: Optional[str]
     created_at: datetime
     updated_at: datetime
