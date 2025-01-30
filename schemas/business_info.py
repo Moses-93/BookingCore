@@ -11,7 +11,7 @@ class BusinessInfoBase(BaseModel):
 class BusinessInfoCreate(BusinessInfoBase):
     phone: str = Field(..., min_length=13, max_length=13, pattern=r"^\+380\d{9}$")
     working_hours: str = Field(..., example="9:00-18:00", min_length=10, max_length=12)
-    google_maps_url: Optional[HttpUrl] = Field(None, max_length=200)
+    google_maps_link: Optional[str] = Field(None, max_length=200)
     description: Optional[str] = Field(None, min_length=10, max_length=200)
 
 
