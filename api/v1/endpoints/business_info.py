@@ -33,6 +33,7 @@ async def create_business_info(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
+    master = user.masters[0]
     logger.info(f"Business info: {business_info}")
     result = await crud.create(
         model=BusinessInfo,
@@ -41,8 +42,11 @@ async def create_business_info(
         address=business_info.address,
         phone=business_info.phone,
         working_hours=business_info.working_hours,
-        google_maps_url=business_info.google_maps_url,
+        google_maps_link=business_info.google_maps_link,
         description=business_info.description,
+        telegram_link=business_info.telegram_link,
+        instagram_link=business_info.instagram_link,
+        master_id=master.id
     )
     ensure_resource_exists(
         result, status_code=400, message="Failed to create business info"
@@ -58,13 +62,15 @@ async def update_business_info(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
+    master = user.masters[0]
     logger.info(f"Update business info:{name}")
     update_data = business_info.model_dump(exclude_unset=True)
 
     result = await crud.update(
         model=BusinessInfo,
         session=db,
-        expressions=(BusinessInfo.name == name),
+        expressions=(BusinessInfo.master_id == master.id,),
         **update_data,
     )
+
     ensure_resource_exists(result)
