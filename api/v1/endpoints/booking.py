@@ -22,6 +22,7 @@ async def create_booking(
     booking: booking.BookingCreate,
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
+    master_id: int | None = Query(None),
 ):
     if not master_id:
         master = check_number_masters(user)
