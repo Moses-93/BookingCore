@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/dates", tags=["dates"])
 
 
-@router.get("/", response_model=List[date.DateResponse])
+@router.get("/", response_model=List[date.DateResponse], status_code=status.HTTP_200_OK)
 @requires_role(["admin", "user"])
 async def get_active_dates(
     master_id: int | None = Query(None),
