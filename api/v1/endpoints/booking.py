@@ -1,7 +1,7 @@
 import logging
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from typing import List
 from datetime import datetime
 
 from core.dependencies import get_db, verify_user
@@ -9,7 +9,7 @@ from decorators.permissions import requires_role
 from schemas import booking
 from db.models import Booking, User
 from db.crud import crud
-from utils.validators import ensure_resource_exists
+from utils.validators import ensure_resource_exists, check_number_masters
 
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
