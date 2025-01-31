@@ -34,6 +34,8 @@ async def create_booking(
         user_id=user.id,
         service_id=booking.service_id,
         date_id=booking.date_id,
+        time_id=booking.time_id,
+        master_id=master_id,
     )
     ensure_resource_exists(result, status_code=400, message="Failed to create booking")
     return result
