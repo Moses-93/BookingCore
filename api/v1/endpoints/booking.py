@@ -53,7 +53,6 @@ async def create_booking(
     result = await crud.create(
         model=Booking,
         session=db,
-        time=datetime.strptime(booking.time, "%H:%M").time(),
         user_id=user.id,
         service_id=booking.service_id,
         date_id=booking.date_id,
