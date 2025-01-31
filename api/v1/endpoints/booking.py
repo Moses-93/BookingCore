@@ -16,7 +16,30 @@ router = APIRouter(prefix="/bookings", tags=["bookings"])
 logger = logging.getLogger(__name__)
 
 
-@router.post("/")
+@router.get(
+    "/", response_model=List[booking.BookingResponse], status_code=status.HTTP_200_OK
+)
+@requires_role(["master", "user", "admin"])
+async def get_booking(
+    active: bool | None = Query(None),
+    user: User = Depends(verify_user),
+    db: AsyncSession = Depends(get_db),
+):
+    filters = {"active": active} if active is not None else {}
+
+    if user.role == "master":
+        filters["master_id"] = user.id
+    else:
+        filters["user_id"] = user.id
+
+    result = await crud.read(model=Booking, session=db, **filters)
+
+    bookings = await result.scalars().all()
+    ensure_resource_exists(bookings)
+    return bookings
+
+
+@router.post("/", status_code=status.HTTP_201_CREATED)
 @requires_role(["admin", "user"])
 async def create_booking(
     booking: booking.BookingCreate,
