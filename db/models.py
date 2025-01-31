@@ -68,6 +68,9 @@ class Booking(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"))
     date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"))
+    master_id = Column(
+        Integer, ForeignKey("masters.id", ondelete="CASCADE"), index=True
+    )
 
     user = relationship("User", back_populates="bookings", lazy="joined")
     date = relationship("Date", back_populates="bookings", lazy="joined")
