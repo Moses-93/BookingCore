@@ -17,6 +17,7 @@ class BookingCreate(BookingBase):
     time: str
     service_id: int
     date_id: int
+    master_id: Optional[int] = None
 
 
 class BookingUpdate(BookingBase):
