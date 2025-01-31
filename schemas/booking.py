@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
-from datetime import datetime, time
+from datetime import datetime
 
 import schemas as schemas
 import schemas.date
@@ -10,11 +10,10 @@ import schemas.user
 
 class BookingBase(BaseModel):
     active: Optional[bool] = Field(default=True)
-    time: time
 
 
 class BookingCreate(BookingBase):
-    time: str
+    time_id: int
     service_id: int
     date_id: int
     master_id: Optional[int] = None
