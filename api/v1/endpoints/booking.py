@@ -23,7 +23,9 @@ async def create_booking(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
-    (user,) = user
+    if not master_id:
+        master = check_number_masters(user)
+        master_id = master.id
     result = await crud.create(
         model=Booking,
         session=db,
