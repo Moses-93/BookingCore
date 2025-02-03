@@ -17,7 +17,7 @@ router = APIRouter(prefix="/dates", tags=["dates"])
 
 
 @router.get("/", response_model=List[date.DateResponse], status_code=status.HTTP_200_OK)
-@requires_role(["admin", "user"])
+@requires_role(["admin", "user", "master"])
 async def get_active_dates(
     master_id: int | None = Query(None),
     user: User = Depends(verify_user),

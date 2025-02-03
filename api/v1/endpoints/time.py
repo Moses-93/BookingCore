@@ -17,7 +17,7 @@ router = APIRouter(prefix="/times", tags=["times"])
 
 
 @router.get("/", response_model=list[TimeResponse], status_code=status.HTTP_200_OK)
-@requires_role(["admin", "user"])
+@requires_role(["admin", "user", "master"])
 async def get_times(
     master_id: int | None = Query(None),
     date_id: int | None = Query(None),
@@ -37,7 +37,7 @@ async def get_times(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@requires_role(["admin"])
+@requires_role(["admin", "master"])
 async def create_time(
     time: TimeCreate,
     db: AsyncSession = Depends(get_db),
