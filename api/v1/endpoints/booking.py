@@ -2,7 +2,6 @@ import logging
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
-from datetime import datetime
 
 from core.dependencies import get_db, verify_user
 from decorators.permissions import requires_role
@@ -20,8 +19,10 @@ logger = logging.getLogger(__name__)
     "/", response_model=List[booking.BookingResponse], status_code=status.HTTP_200_OK
 )
 @requires_role(["master", "user", "admin"])
-async def get_booking(
+async def get_bookings(
     active: bool | None = Query(None),
+    limit: int = Query(default=5, ge=1, le=50),
+    offset: int = Query(default=0, le=0),
     user: User = Depends(verify_user),
     db: AsyncSession = Depends(get_db),
 ):
