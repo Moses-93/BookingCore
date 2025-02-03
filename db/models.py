@@ -101,6 +101,18 @@ class User(Base):
         return f"Name: {self.name} | UserID: {self.chat_id}"
 
 
+class Master(Base):
+    __tablename__ = "masters"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True)
+    created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    users = relationship(
+        "User", secondary=user_master_association, back_populates="masters"
+    )
+
+
 class Time(Base):
     __tablename__ = "times"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -150,19 +162,3 @@ class Feedback(Base):
 
     def __str__(self):
         return f"Ім'я: {self.user.name} | Рейтинг: {self.rating} | Коментар: {self.comment}"
-
-
-class Master(Base):
-    __tablename__ = "masters"
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50), nullable=False)
-    phone = Column(String(13), nullable=False, unique=True)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-
-    users = relationship(
-        "User", secondary=user_master_association, back_populates="masters"
-    )
-
-    def __str__(self):
-        return f"Майстер: {self.name} | Телефон: {self.phone}"
