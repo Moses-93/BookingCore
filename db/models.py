@@ -86,6 +86,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     username = Column(String, nullable=True)
+    phone = Column(String(13), nullable=True, unique=True)
     chat_id = Column(BigInteger, index=True, nullable=False, unique=True)
     role = Column(String(10), nullable=True, default="user")
 
