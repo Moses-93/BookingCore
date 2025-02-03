@@ -7,7 +7,7 @@ from datetime import datetime
 from core.dependencies import get_db, verify_user
 from decorators.permissions import requires_role
 from schemas import booking
-from db.models import Booking, User
+from db.models import Booking, Master, User
 from db.crud import crud
 from utils.validators import ensure_resource_exists, check_number_masters
 
@@ -26,15 +26,18 @@ async def get_booking(
     db: AsyncSession = Depends(get_db),
 ):
     filters = {"active": active} if active is not None else {}
-
     if user.role == "master":
-        filters["master_id"] = user.id
-    else:
+        result = await crud.read(model=Master, session=db, user_id=user.id)
+        master = result.unique().scalar_one_or_none()
+        filters["master_id"] = master.id
+    elif user.role == "user":
         filters["user_id"] = user.id
 
-    result = await crud.read(model=Booking, session=db, **filters)
+    result = await crud.read(
+        model=Booking, session=db, limit=limit, offset=offset, **filters
+    )
 
-    bookings = await result.scalars().all()
+    bookings = result.unique().scalars().all()
     ensure_resource_exists(bookings)
     return bookings
 
