@@ -9,6 +9,7 @@ from schemas import booking
 from db.models import Booking, Master, User
 from db.crud import crud
 from utils.validators import ensure_resource_exists, check_number_masters
+from tasks.reminders import schedule_reminder
 
 
 router = APIRouter(prefix="/bookings", tags=["bookings"])
@@ -74,3 +75,14 @@ async def create_booking(
             booking.reminder_time,
         )
     return result
+
+
+@router.patch("/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
+@requires_role(["user"])
+async def deactivate_book(
+    book_id: int, user: User = Depends(verify_user), db: AsyncSession = Depends(get_db)
+):
+    result = await crud.update(
+        model=Booking, session=db, expressions=(Booking.id == book_id,), active=False
+    )
+    ensure_resource_exists(result)
