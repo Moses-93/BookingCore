@@ -62,6 +62,15 @@ async def create_booking(
         date_id=booking.date_id,
         time_id=booking.time_id,
         master_id=master_id,
+        reminder_time=booking.reminder_time,
     )
     ensure_resource_exists(result, status_code=400, message="Failed to create booking")
+    if booking.reminder_time:
+        schedule_reminder(
+            user.chat_id,
+            booking.service,
+            booking.date,
+            booking.time,
+            booking.reminder_time,
+        )
     return result
