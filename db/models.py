@@ -62,7 +62,7 @@ class Booking(Base):
     __tablename__ = "bookings"
     id = Column(Integer, primary_key=True)
     active = Column(Boolean, default=True, index=True)
-    reminder_hours = Column(Integer, nullable=True)
+    reminder_time = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=func.now())
     time_id = Column(Integer, ForeignKey("times.id", ondelete="CASCADE"), nullable=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
