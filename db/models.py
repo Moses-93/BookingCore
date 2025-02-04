@@ -64,6 +64,7 @@ class Booking(Base):
     active = Column(Boolean, default=True, index=True)
     reminder_time = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
     time_id = Column(Integer, ForeignKey("times.id", ondelete="CASCADE"), nullable=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"))
