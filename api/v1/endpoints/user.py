@@ -13,7 +13,6 @@ from db.models import User, user_master_association
 from db.crud import crud
 from utils.validators import ensure_resource_exists
 
-
 router = APIRouter(prefix="/users", tags=["users"])
 logger = logging.getLogger(__name__)
 
@@ -23,7 +22,8 @@ logger = logging.getLogger(__name__)
 async def get_user(
     user: User = Depends(verify_user), db: AsyncSession = Depends(get_db)
 ):
-    users = await crud.read(model=User, session=db)
+    result = await crud.read(model=User, session=db)
+    users = result.unique().scalars().all()
     ensure_resource_exists(users)
     return users
 
@@ -33,14 +33,9 @@ async def create_user(
     user: UserCreate,
     db: AsyncSession = Depends(get_db),
 ):
-
-    new_user = await crud.create(
-        model=User,
-        session=db,
-        name=user.name,
-        username=user.username,
-        chat_id=user.chat_id,
-    )
+    user_data = user.model_dump(exclude={"master_id"})
+    new_user = await crud.create(model=User, session=db, **user_data)
+    logger.info(f"New user: {new_user}")
     ensure_resource_exists(
         new_user, status_code=400, message="Invalid data for user creation"
     )
