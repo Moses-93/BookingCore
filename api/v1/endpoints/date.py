@@ -6,10 +6,11 @@ from typing import List
 from core.dependencies import verify_user
 from core.dependencies import get_db
 from db.crud import crud
-from db.models import Date, User
+from db.models import Date, Master, User
 from schemas import date
 from decorators.permissions import requires_role
 from utils.validators import ensure_resource_exists, check_number_masters
+from tasks.deactivate_dates import schedule_deactivate_dates
 
 
 logger = logging.getLogger(__name__)
@@ -60,6 +61,7 @@ async def create_date(
     ensure_resource_exists(
         created_date, status_code=400, message="Failed to create date"
     )
+    await schedule_deactivate_dates(created_date.id, created_date.del_time)
     return created_date
 
 
