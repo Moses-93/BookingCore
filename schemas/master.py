@@ -4,7 +4,6 @@ from datetime import datetime
 
 class MasterBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=50)
-    phone: str = Field(..., pattern=r"^\+380\d{9}$")
 
 
 class MasterCreate(MasterBase):
