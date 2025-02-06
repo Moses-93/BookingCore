@@ -48,12 +48,14 @@ async def create_date(
     db: AsyncSession = Depends(get_db),
 ):
 
+    result = await crud.read(model=Master, session=db, user_id=user.id)
+    master = result.unique().scalar_one_or_none()
     created_date = await crud.create(
         model=Date,
         session=db,
         date=date.date,
         del_time=date.del_time,
-        master_id=user.id,
+        master_id=master.id,
     )
     ensure_resource_exists(
         created_date, status_code=400, message="Failed to create date"
