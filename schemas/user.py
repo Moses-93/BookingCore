@@ -9,7 +9,6 @@ class UserBase(BaseModel):
     phone: str
     chat_id: int = Field(..., ge=2)
     role: Optional[str]
-    master_id: int
 
 
 class UserCreate(UserBase):
@@ -17,14 +16,11 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(UserBase):
-    name: Optional[str] = None
     role: Optional[str] = None
-    username: Optional[str] = None
 
 
 class UserResponse(UserBase):
     id: int
-    masters: List[MasterResponse]
 
     class Config:
         from_attributes = True
