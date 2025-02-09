@@ -5,7 +5,12 @@ from core.config import settings
 celery_app = Celery(
     "tasks",
     broker=settings.redis_url,
-    include=["tasks.reminders", "tasks.deactivate_bookings", "tasks.deactivate_dates"],
+    include=[
+        "tasks.reminders",
+        "tasks.deactivate_bookings",
+        "tasks.deactivate_dates",
+        "tasks.deactivate_times",
+    ],
 )
 
 celery_app.conf.update(
@@ -16,6 +21,7 @@ celery_app.conf.update(
             "queue": "deactivate_bookings"
         },
         "tasks.deactivate_dates.deactivate_date": {"queue": "deactivate_dates"},
+        "tasks.deactivate_times.deactivate_time": {"queue": "deactivate_times"},
     },
 )
 
