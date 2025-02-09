@@ -9,7 +9,8 @@ from db.crud import crud
 from db.models import User, Time
 from schemas.time import TimeCreate, TimeResponse
 from decorators.permissions import requires_role
-from utils.validators import check_number_masters, ensure_resource_exists
+from utils.validators import ensure_resource_exists
+from tasks.deactivate_times import schedule_deactivate_time
 
 
 logger = logging.getLogger(__name__)
@@ -43,16 +44,16 @@ async def create_time(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(verify_user),
 ):
-
-    result = await crud.create(
+    new_time = await crud.create(
         model=Time,
         session=db,
         time=time.time,
         date_id=time.date_id,
     )
-    ensure_resource_exists(result, status_code=400, message="Failed to create time")
+    ensure_resource_exists(new_time, status_code=400, message="Failed to create time")
     logger.info(f"Time {time.time} for date_id {time.date_id} created successfully")
-    return result
+    await schedule_deactivate_time(new_time.id, time.date, time.time)
+    return new_time
 
 
 @router.delete("/{time_id}", status_code=status.HTTP_204_NO_CONTENT)
