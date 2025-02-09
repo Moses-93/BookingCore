@@ -1,6 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel, Field
-from datetime import time
+from datetime import time, date
 
 
 class TimeBase(BaseModel):
@@ -10,6 +10,7 @@ class TimeBase(BaseModel):
 class TimeCreate(TimeBase):
     active: Optional[bool] = Field(default=True)
     date_id: int
+    date: date
 
 
 class TimeResponse(TimeBase):
