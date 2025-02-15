@@ -38,7 +38,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     username = Column(String, nullable=True)
-    phone = Column(Text, nullable=True, unique=True)
+    phone_number = Column(Text, nullable=True, unique=True)
     chat_id = Column(BigInteger, index=True, nullable=False, unique=True)
     role = Column(String(10), nullable=True, default="client")
 
@@ -131,7 +131,7 @@ class BusinessInfo(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
     address = Column(String(60), nullable=False)
-    phone = Column(String(13), nullable=False)
+    phone_number = Column(String(13), nullable=False)
     description = Column(String, nullable=True)
     working_hours = Column(String, nullable=False)
     google_maps_link = Column(String, nullable=True)
