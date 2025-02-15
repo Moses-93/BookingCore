@@ -123,6 +123,7 @@ class Time(Base):
         Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True
     )
 
+    date = relationship("Date", uselist=False, backref="time", lazy="joined")
     bookings = relationship("Booking", back_populates="time")
 
     def __str__(self):
