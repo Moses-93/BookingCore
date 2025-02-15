@@ -33,18 +33,28 @@ user_master_association = Table(
 )
 
 
-class Date(Base):
-    __tablename__ = "dates"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    date = Column(Date, nullable=False)
-    active = Column(Boolean, default=True, index=True)
-    del_time = Column(DateTime, nullable=False)
-    master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    username = Column(String, nullable=True)
+    phone = Column(Text, nullable=True, unique=True)
+    chat_id = Column(BigInteger, index=True, nullable=False, unique=True)
+    role = Column(String(10), nullable=True, default="client")
 
-    bookings = relationship("Booking", back_populates="date", lazy="joined")
+    masters = relationship(
+        "User",
+        secondary=user_master_association,
+        primaryjoin=id == user_master_association.c.user_id,
+        secondaryjoin=id == user_master_association.c.master_id,
+        backref="clients",
+    )
+
+    bookings = relationship("Booking", back_populates="user", lazy="joined")
+    feedbacks = relationship("Feedback", back_populates="user", lazy="joined")
 
     def __str__(self):
-        return self.date.strftime("%Y-%m-%d")
+        return f"Name: {self.name} | UserID: {self.chat_id}"
 
 
 class Service(Base):
@@ -59,6 +69,36 @@ class Service(Base):
 
     def __str__(self):
         return f"{self.name}: {self.price} грн."
+
+
+class Date(Base):
+    __tablename__ = "dates"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date = Column(Date, nullable=False)
+    active = Column(Boolean, default=True, index=True)
+    del_time = Column(DateTime, nullable=False)
+    master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
+
+    bookings = relationship("Booking", back_populates="date", lazy="joined")
+
+    def __str__(self):
+        return self.date.strftime("%Y-%m-%d")
+
+
+class Time(Base):
+    __tablename__ = "times"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    active = Column(Boolean, default=True, index=True)
+    time = Column(Time, nullable=False)
+    date_id = Column(
+        Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+
+    date = relationship("Date", uselist=False, backref="time", lazy="joined")
+    bookings = relationship("Booking", back_populates="time")
+
+    def __str__(self):
+        return f"Час: {self.time}"
 
 
 class Booking(Base):
@@ -84,46 +124,6 @@ class Booking(Base):
 
     def __str__(self):
         return f"Час: {self.time} | Створено в: {self.created_at}"
-
-
-class User(Base):
-    __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    username = Column(String, nullable=True)
-    phone = Column(Text, nullable=True, unique=True)
-    chat_id = Column(BigInteger, index=True, nullable=False, unique=True)
-    role = Column(String(10), nullable=True, default="client")
-
-    masters = relationship(
-        "User",
-        secondary=user_master_association,
-        primaryjoin=id == user_master_association.c.user_id,
-        secondaryjoin=id == user_master_association.c.master_id,
-        backref="clients",
-    )
-
-    bookings = relationship("Booking", back_populates="user", lazy="joined")
-    feedbacks = relationship("Feedback", back_populates="user", lazy="joined")
-
-    def __str__(self):
-        return f"Name: {self.name} | UserID: {self.chat_id}"
-
-
-class Time(Base):
-    __tablename__ = "times"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    active = Column(Boolean, default=True, index=True)
-    time = Column(Time, nullable=False)
-    date_id = Column(
-        Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True
-    )
-
-    date = relationship("Date", uselist=False, backref="time", lazy="joined")
-    bookings = relationship("Booking", back_populates="time")
-
-    def __str__(self):
-        return f"Час: {self.time}"
 
 
 class BusinessInfo(Base):
