@@ -21,8 +21,15 @@ Base = declarative_base()
 user_master_association = Table(
     "user_master_association",
     Base.metadata,
-    Column("user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True),
-    Column("master_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True
+    ),
+    Column(
+        "master_id",
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
@@ -32,9 +39,7 @@ class Date(Base):
     date = Column(Date, nullable=False)
     active = Column(Boolean, default=True, index=True)
     del_time = Column(DateTime, nullable=False)
-    master_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True
-    )
+    master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
 
     bookings = relationship("Booking", back_populates="date", lazy="joined")
 
@@ -48,9 +53,7 @@ class Service(Base):
     name = Column(String, nullable=False)
     price = Column(Float, nullable=False)
     active = Column(Boolean, default=True, index=True)
-    master_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True
-    )
+    master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
@@ -69,11 +72,11 @@ class Booking(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     service_id = Column(Integer, ForeignKey("services.id", ondelete="CASCADE"))
     date_id = Column(Integer, ForeignKey("dates.id", ondelete="CASCADE"))
-    master_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True
-    )
+    master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
 
-    user = relationship("User", foreign_keys=[user_id], back_populates="bookings", lazy="joined")
+    user = relationship(
+        "User", foreign_keys=[user_id], back_populates="bookings", lazy="joined"
+    )
     master = relationship("User", foreign_keys=[master_id], lazy="joined")
     date = relationship("Date", back_populates="bookings", lazy="joined")
     service = relationship("Service", lazy="joined")
@@ -107,18 +110,6 @@ class User(Base):
         return f"Name: {self.name} | UserID: {self.chat_id}"
 
 
-class Master(Base):
-    __tablename__ = "masters"
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), unique=True)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-
-    users = relationship(
-        "User", secondary=user_master_association, back_populates="masters"
-    )
-
-
 class Time(Base):
     __tablename__ = "times"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -148,9 +139,7 @@ class BusinessInfo(Base):
     instagram_link = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-    master_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True
-    )
+    master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
 
     def __str__(self):
         return f"Назва: {self.name} | Адреса: {self.address} | Телефон: {self.phone}"
