@@ -41,6 +41,8 @@ class User(Base):
     phone_number = Column(Text, nullable=True, unique=True)
     chat_id = Column(BigInteger, index=True, nullable=False, unique=True)
     role = Column(String(10), nullable=True, default="client")
+    is_active = Column(Boolean, default=True, index=True)
+    created_at = Column(DateTime, default=func.now())
 
     masters = relationship(
         "User",
@@ -62,7 +64,7 @@ class Service(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     price = Column(Float, nullable=False)
-    active = Column(Boolean, default=True, index=True)
+    is_active = Column(Boolean, default=True, index=True)
     master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
@@ -75,9 +77,10 @@ class Date(Base):
     __tablename__ = "dates"
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(Date, nullable=False)
-    active = Column(Boolean, default=True, index=True)
-    del_time = Column(DateTime, nullable=False)
+    is_active = Column(Boolean, default=True, index=True)
+    deactivation_time = Column(DateTime, nullable=False)
     master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    created_at = Column(DateTime, default=func.now())
 
     bookings = relationship("Booking", back_populates="date", lazy="joined")
 
@@ -88,11 +91,12 @@ class Date(Base):
 class Time(Base):
     __tablename__ = "times"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    active = Column(Boolean, default=True, index=True)
+    is_active = Column(Boolean, default=True, index=True)
     time = Column(Time, nullable=False)
     date_id = Column(
         Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True
     )
+    created_at = Column(DateTime, default=func.now())
 
     date = relationship("Date", uselist=False, backref="time", lazy="joined")
     bookings = relationship("Booking", back_populates="time")
@@ -104,7 +108,7 @@ class Time(Base):
 class Booking(Base):
     __tablename__ = "bookings"
     id = Column(Integer, primary_key=True)
-    active = Column(Boolean, default=True, index=True)
+    is_active = Column(Boolean, default=True, index=True)
     reminder_time = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
@@ -142,7 +146,7 @@ class BusinessInfo(Base):
     master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
 
     def __str__(self):
-        return f"Назва: {self.name} | Адреса: {self.address} | Телефон: {self.phone}"
+        return f"Назва: {self.name} | Адреса: {self.address} | Телефон: {self.phone_number}"
 
 
 class Feedback(Base):
