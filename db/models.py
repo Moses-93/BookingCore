@@ -175,3 +175,44 @@ class Referral(Base):
 
     # referrer = relationship("User", foreign_keys=[referrer_master_id], back_populates="referrals_given", lazy="joined")
     # referred = relationship("User", foreign_keys=[referred_master_id], back_populates="referrals_received", lazy="joined")
+
+
+class SubscriptionPlan(Base):
+    __tablename__ = "subscription_plans"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, unique=True, nullable=False)
+    duration_days = Column(Integer, nullable=False)
+    price = Column(Float, nullable=False, default=0.0)
+    created_at = Column(DateTime, default=func.now())
+
+    subscriptions = relationship("Subscription", back_populates="plan")
+
+
+class Subscription(Base):
+    __tablename__ = "subscriptions"
+    id = Column(Integer, primary_key=True)
+    master_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    plan_id = Column(
+        Integer, ForeignKey("subscription_plans.id", ondelete="CASCADE"), nullable=False
+    )
+    expires_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=func.now())
+
+    master = relationship("User", back_populates="subscription", lazy="joined")
+    plan = relationship(
+        "SubscriptionPlan", back_populates="subscriptions", lazy="joined"
+    )
+
+
+# Створити таблицю
+# Поля:
+#     - master_id (FK → Users)
+#     - plan_type (ENUM: free, monthly, yearly, promo)
+#     - expires_at (TIMESTAMP)
+#     - payment_status (ENUM: pending, success, failed)
+#     - created_at (TIMESTAMP)
+
+# Оновити:
+# -  Додати поле is_active до таблиці masters
