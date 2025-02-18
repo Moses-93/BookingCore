@@ -6,22 +6,20 @@ celery_app = Celery(
     "tasks",
     broker=settings.redis_url,
     include=[
-        "tasks.reminders",
-        "tasks.deactivate_bookings",
-        "tasks.deactivate_dates",
-        "tasks.deactivate_times",
+        "tasks.reminders.reminder",
+        "tasks.deactivation.booking",
+        "tasks.deactivation.date",
+        "tasks.deactivation.time",
     ],
 )
 
 celery_app.conf.update(
     timezone="UTC",
     task_routes={
-        "tasks.reminders.send_reminder": {"queue": "reminders"},
-        "tasks.deactivate_bookings.deactivate_booking": {
-            "queue": "deactivate_bookings"
-        },
-        "tasks.deactivate_dates.deactivate_date": {"queue": "deactivate_dates"},
-        "tasks.deactivate_times.deactivate_time": {"queue": "deactivate_times"},
+        "tasks.reminders.reminder.send_reminder": {"queue": "reminders"},
+        "tasks.deactivation.booking.deactivate_booking": {"queue": "deactivate"},
+        "tasks.deactivation.date.deactivate_date": {"queue": "deactivate"},
+        "tasks.deactivation.time.deactivate_time": {"queue": "deactivate"},
     },
 )
 
