@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class UserBase(BaseModel):
     name: str
     username: str
-    phone: str
+    phone_number: str
     chat_id: int = Field(..., ge=2)
     role: Optional[str]
     is_active: Optional[bool] = Field(default=True)
@@ -19,7 +19,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     master_id: Optional[int]
 
-    @field_validator("phone", mode="before")
+    @field_validator("phone_number", mode="before")
     @classmethod
     def enctypy_phone(csl, value: str) -> str:
         logger.info(f"Запуск методу для кодування номеру телефона")
@@ -38,7 +38,7 @@ class UserResponse(UserBase):
     class Config:
         from_attributes = True
 
-    @field_validator("phone")
+    @field_validator("phone_number")
     @classmethod
     def decrypt_phone(cls, value: str) -> str:
         logger.info(f"Запуск методу для декодування номеру телефона")
