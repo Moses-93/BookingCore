@@ -5,7 +5,7 @@ from datetime import date, datetime
 
 class DateBase(BaseModel):
     date: date
-    active: bool = Field(default=True)
+    is_active: bool = Field(default=True)
 
 
 class DateCreate(DateBase):

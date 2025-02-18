@@ -13,6 +13,7 @@ class UserBase(BaseModel):
     phone: str
     chat_id: int = Field(..., ge=2)
     role: Optional[str]
+    is_active: Optional[bool] = Field(default=True)
 
 
 class UserCreate(UserBase):

@@ -10,7 +10,7 @@ import schemas.user
 
 
 class BookingBase(BaseModel):
-    active: Optional[bool] = Field(default=True)
+    is_active: Optional[bool] = Field(default=True)
 
 
 class BookingCreate(BookingBase):
@@ -18,7 +18,7 @@ class BookingCreate(BookingBase):
     service_id: int
     date_id: int
     master_id: Optional[int] = None
-    reminder_time: Optional[datetime]
+    reminder_time: Optional[datetime] = None
     date: date
     time: time
     service: str

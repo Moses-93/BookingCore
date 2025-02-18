@@ -6,7 +6,7 @@ from typing import Optional
 class ServiceBase(BaseModel):
     name: str = Field(..., min_length=2, max_length=50)
     price: int = Field(..., ge=0)
-    active: bool = Field(default=True)
+    is_active: bool = Field(default=True)
 
 
 class ServiceCreate(ServiceBase):
@@ -16,7 +16,7 @@ class ServiceCreate(ServiceBase):
 class ServiceUpdate(ServiceBase):
     name: Optional[str] = Field(None, min_length=2, max_length=50)
     price: Optional[int] = Field(None, ge=0)
-    active: Optional[bool] = None
+    is_active: Optional[bool] = None
 
     @model_validator(mode="before")
     def validate_data(cls, values):
