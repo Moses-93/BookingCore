@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel, Field, field_validator
 from utils.encryption import encription_service
 
@@ -32,8 +32,19 @@ class UserUpdate(UserBase):
     role: Optional[str] = None
 
 
+class MasterResponse(BaseModel):
+    name:str
+    username:Optional[str] = None
+    chat_id:int
+
+
+class MasterLinkRequest(BaseModel):
+    master_chat_id: int
+
+
 class UserResponse(UserBase):
     id: int
+    masters: List[MasterResponse] = []
 
     class Config:
         from_attributes = True
