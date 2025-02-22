@@ -17,7 +17,7 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    master_id: Optional[int]
+    master_chat_id: Optional[int]
 
     @field_validator("phone_number", mode="before")
     @classmethod
