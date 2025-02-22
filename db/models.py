@@ -166,21 +166,6 @@ class Feedback(Base):
         return f"Ім'я: {self.user.name} | Рейтинг: {self.rating} | Коментар: {self.comment}"
 
 
-class Referral(Base):
-    __tablename__ = "referrals"
-    id = Column(Integer, primary_key=True)
-    referrer_master_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
-    )
-    referred_master_id = Column(
-        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
-    )
-    created_at = Column(DateTime, default=func.now())
-
-    # referrer = relationship("User", foreign_keys=[referrer_master_id], back_populates="referrals_given", lazy="joined")
-    # referred = relationship("User", foreign_keys=[referred_master_id], back_populates="referrals_received", lazy="joined")
-
-
 class SubscriptionPlan(Base):
     __tablename__ = "subscription_plans"
     id = Column(Integer, primary_key=True)
