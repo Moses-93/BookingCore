@@ -43,5 +43,9 @@ class Settings(BaseSettings):
         db = self._database_secrets
         return f"postgresql+{driver}://{db.get("username")}:{db.get("password")}@{db.get("host")}:{db.get("port")}/{db.get("dbname")}"
 
+    @property
+    def redis_url(self):
+        return "redis://localhost:6379/0"
+
 
 settings = Settings()
