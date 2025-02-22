@@ -49,8 +49,17 @@ async def create_user(
     return new_user
 
 
-@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-@requires_role(["admin"])
+@router.post("/masters/", status_code=status.HTTP_204_NO_CONTENT)
+async def link_master_to_user(
+    master:MasterLinkRequest,
+    user: User = Depends(verify_user),
+    db: AsyncSession = Depends(get_db),
+    ):
+    await UserService(db).add_master_to_user(user.id, master.master_chat_id)
+
+
+@router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
+@requires_role(["client", "master"])
 async def delete_user(
     user_id: int,
     user: User = Depends(verify_user),
