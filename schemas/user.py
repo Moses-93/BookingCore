@@ -33,9 +33,9 @@ class UserUpdate(UserBase):
 
 
 class MasterResponse(BaseModel):
-    name:str
-    username:Optional[str] = None
-    chat_id:int
+    name: str
+    username: Optional[str] = None
+    chat_id: int
 
 
 class MasterLinkRequest(BaseModel):

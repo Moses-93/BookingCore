@@ -28,10 +28,10 @@ async def create_user(
 
 @router.post("/masters/", status_code=status.HTTP_204_NO_CONTENT)
 async def link_master_to_user(
-    master:MasterLinkRequest,
+    master: MasterLinkRequest,
     user: User = Depends(verify_user),
     db: AsyncSession = Depends(get_db),
-    ):
+):
     await UserService(db).add_master_to_user(user.id, master.master_chat_id)
 
 
