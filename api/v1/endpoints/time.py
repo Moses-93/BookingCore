@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.dependencies import verify_user
 from core.dependencies import get_db
 from db.crud import crud
-from db.models import User, Time
+from db.models.user import User
+from db.models.booking import Time
 from schemas.time import TimeCreate, TimeResponse
 from decorators.permissions import requires_role
 from utils.validators import ensure_resource_exists

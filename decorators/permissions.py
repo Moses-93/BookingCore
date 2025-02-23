@@ -1,7 +1,7 @@
 import logging
 from fastapi import HTTPException
 from functools import wraps
-from db.models import User
+from db.models.user import User
 
 
 logger = logging.getLogger(__name__)

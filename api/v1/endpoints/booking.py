@@ -5,7 +5,8 @@ from typing import List
 from core.dependencies import get_db, verify_user
 from decorators.permissions import requires_role
 from schemas import booking
-from db.models import Booking, User
+from db.models.booking import Booking
+from db.models.user import User
 from db.crud import crud
 from services.booking import booking_service
 from utils.validators import ensure_resource_exists, check_number_masters
@@ -37,7 +38,7 @@ async def get_bookings(
 async def create_booking(
     booking: booking.BookingCreate,
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
+    user: user.User = Depends(verify_user),
     master_id: int | None = Query(None),
 ):
     if not master_id:

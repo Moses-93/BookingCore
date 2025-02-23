@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import update
 from asgiref.sync import async_to_sync
 from core.dependencies import get_db
-from db.models import Date
+from db.models.booking import Date
 from db.crud import new_crud
 from ..celery_app import celery_app
 

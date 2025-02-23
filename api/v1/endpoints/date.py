@@ -6,7 +6,8 @@ from typing import List
 from core.dependencies import verify_user
 from core.dependencies import get_db
 from db.crud import crud
-from db.models import Date, Master, User
+from db.models.booking import Date
+from db.models.user import User
 from schemas import date
 from decorators.permissions import requires_role
 from utils.validators import ensure_resource_exists, check_number_masters

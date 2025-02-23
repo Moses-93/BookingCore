@@ -7,7 +7,8 @@ from typing import List
 from core.dependencies import get_db, verify_user
 from decorators.permissions import requires_role
 from schemas import business_info
-from db.models import BusinessInfo, User
+from db.models.business import BusinessInfo
+from db.models.user import User
 from db.crud import crud
 from utils.validators import ensure_resource_exists
 

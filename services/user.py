@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import Select, insert, select, delete, update
 from typing import Dict
 from db.crud import new_crud
-from db.models import User, user_master_association
+from db.models.user import User, user_master_association
 from schemas.user import UserCreate
 
 

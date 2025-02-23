@@ -1,6 +1,10 @@
+import logging
 from typing import Any, Dict
 from fastapi import HTTPException
-from db.models import User
+from db.models.user import User
+
+
+logger = logging.getLogger(__name__)
 
 
 def ensure_resource_exists(

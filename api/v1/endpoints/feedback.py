@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 from core.dependencies import verify_user, get_db
 from db.crud import crud
-from db.models import Feedback, User
+from db.models.feedback import Feedback
+from db.models.user import User
 from schemas.feedback import FeedbackCreate, FeedbackResponse
 from decorators.permissions import requires_role
 from utils.validators import ensure_resource_exists

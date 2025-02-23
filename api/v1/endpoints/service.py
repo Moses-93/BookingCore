@@ -3,7 +3,8 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.crud import crud
-from db.models import Service, User
+from db.models.service import Service
+from db.models.user import User
 from schemas import service
 from decorators.permissions import requires_role
 from core.dependencies import verify_user, get_db

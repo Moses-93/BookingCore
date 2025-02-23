@@ -4,7 +4,8 @@ from sqlalchemy import select, update
 from datetime import date, time, datetime
 from typing import Dict, Optional, List
 from core.constants import BOOKING_MESSAGE, REMINDER_MESSAGE
-from db.models import Booking, Time, User
+from db.models.booking import Booking, Time
+from db.models.user import User
 from db.crud import new_crud
 from schemas.booking import BookingCreate
 from utils.validators import ensure_resource_exists
