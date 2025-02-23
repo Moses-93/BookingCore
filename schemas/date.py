@@ -9,7 +9,7 @@ class DateBase(BaseModel):
 
 
 class DateCreate(DateBase):
-    del_time: datetime
+    deactivation_time: datetime
 
 
 class DateResponse(DateBase):
