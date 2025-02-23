@@ -1,7 +1,16 @@
 import sys
 import logging
 from fastapi import FastAPI
-from api.v1.endpoints import booking, date, service, time, business_info, user, feedback
+from api.v1.endpoints import (
+    booking,
+    date,
+    service,
+    time,
+    business_info,
+    user,
+    feedback,
+    subscription,
+)
 from core import middleware, config
 
 
@@ -33,6 +42,7 @@ def main() -> FastAPI:
     app.include_router(business_info.router, prefix="/api/v1")
     app.include_router(user.router, prefix="/api/v1")
     app.include_router(feedback.router, prefix="/api/v1")
+    app.include_router(subscription.router, prefix="/api/v1")
     return app
 
 
