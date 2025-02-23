@@ -34,7 +34,7 @@ async def get_bookings(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@requires_role(["master", "user"])
+@requires_role(["master", "client"])
 async def create_booking(
     booking: booking.BookingCreate,
     db: AsyncSession = Depends(get_db),
@@ -50,7 +50,7 @@ async def create_booking(
 
 
 @router.patch("/{booking_id}", status_code=status.HTTP_204_NO_CONTENT)
-@requires_role(["user"])
+@requires_role(["client"])
 async def deactivate_book(
     booking_id: int,
     user: User = Depends(verify_user),

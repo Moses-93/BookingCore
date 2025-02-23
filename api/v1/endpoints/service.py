@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @router.get(
     "/", response_model=list[service.ServiceResponse], status_code=status.HTTP_200_OK
 )
-@requires_role(["admin", "user"])
+@requires_role(["admin", "client", "master"])
 async def get_services(
     master_id: int | None = Query(None),
     db: AsyncSession = Depends(get_db),

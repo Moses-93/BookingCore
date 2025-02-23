@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.get("/", response_model=List[business_info.BusinessInfoResponse])
-@requires_role(["admin", "user"])
+@requires_role(["admin", "client"])
 async def get_business_info(
     user: User = Depends(verify_user), db: AsyncSession = Depends(get_db)
 ):

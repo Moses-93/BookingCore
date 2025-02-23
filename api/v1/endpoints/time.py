@@ -19,7 +19,7 @@ router = APIRouter(prefix="/times", tags=["times"])
 
 
 @router.get("/", response_model=list[TimeResponse], status_code=status.HTTP_200_OK)
-@requires_role(["admin", "user", "master"])
+@requires_role(["admin", "client", "master"])
 async def get_times(
     master_id: int | None = Query(None),
     date_id: int | None = Query(None),
