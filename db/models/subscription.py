@@ -38,5 +38,6 @@ class Subscription(Base):
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
     plan = relationship(
-        "SubscriptionPlan", back_populates="subscriptions", lazy="joined"
+        "SubscriptionPlan", back_populates="subscriptions", lazy="joined", uselist=False
     )
+    user = relationship("User", uselist=False, back_populates="subscription")
