@@ -17,6 +17,7 @@ class SubscriptionPlan(Base):
     name = Column(String, unique=True, nullable=False)
     duration_days = Column(Integer, nullable=False)
     price = Column(Float, nullable=False, default=0.0)
+    description = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())
 
     subscriptions = relationship("Subscription", back_populates="plan")
