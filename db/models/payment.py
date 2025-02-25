@@ -10,12 +10,6 @@ from sqlalchemy import (
 from .base import Base
 
 
-class PaymentStatus(Enum):
-    PENDING = "pending"
-    COMPLETED = "completed"
-    FAILED = "failed"
-
-
 class Payment(Base):
     __tablename__ = "payments"
 
@@ -34,9 +28,11 @@ class Payment(Base):
     )
     amount = Column(Integer, nullable=False)
     payment_date = Column(DateTime, default=func.now())
-    payment_method = Column(
-        String, nullable=False
+    payment_method = Column(String, nullable=True)
+    status = Column(
+        Enum("pending", "completed", "failed", name="payment_status"),
+        nullable=False,
+        default="pending",
     )
-    status = Column(Enum(PaymentStatus), nullable=False, default=PaymentStatus.PENDING)
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
