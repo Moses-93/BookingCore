@@ -25,6 +25,7 @@ requests = "2.32.3"
 cryptography = "^44.0.0"
 asgiref = "^3.8.1"
 pyngrok = "^7.2.3"
+httpx = "^0.28.1"
 
 
 [build-system]
