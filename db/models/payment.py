@@ -19,14 +19,9 @@ class Payment(Base):
         Integer, ForeignKey("subscription_plans.id"), nullable=False, index=True
     )
     order_id = Column(String, unique=True, nullable=False, index=True)
-    transaction_id = Column(String, unique=True, nullable=True)
     amount = Column(Integer, nullable=False)
     payment_date = Column(DateTime, default=func.now())
     payment_method = Column(String, nullable=True)
-    status = Column(
-        Enum("pending", "completed", "failed", name="payment_status"),
-        nullable=False,
-        default="pending",
-    )
+    status = Column(String, default="Pending")
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
