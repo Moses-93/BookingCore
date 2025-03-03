@@ -17,7 +17,7 @@ class Settings(BaseSettings):
 
     @property
     def _database_secrets(self):
-        return self._secret_fetcher.fetch_secret("dev/BookEasyBot")
+        return self._secret_fetcher.fetch_secret("dev/BookEasyBot/postgres")
 
     @property
     def _telegram_secrets(self):
