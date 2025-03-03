@@ -1,4 +1,5 @@
 from celery import Celery
+from celery.schedules import crontab
 from core.config import settings
 
 
@@ -13,8 +14,16 @@ celery_app = Celery(
     ],
 )
 
+celery_app.conf.beat_schedule = {
+    "check-subscriptions-daily": {
+        "task": "tasks.reminders.check_subscriptions",
+        "schedule": crontab(hour=9, minute=0),
+    },
+}
+
 celery_app.conf.update(
-    timezone="UTC",
+    timezone="Europe/Kyiv",
+    broker_connection_retry_on_startup=True,
     task_routes={
         "tasks.reminders.reminder.send_reminder": {"queue": "reminders"},
         "tasks.deactivation.booking.deactivate_booking": {"queue": "deactivate"},
