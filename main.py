@@ -31,6 +31,8 @@ def main() -> FastAPI:
 
     app = FastAPI(title="Booking API")
 
+    app.add_middleware(middleware.AuthSubscriptionMiddleware)
+
     app.add_middleware(
         middleware.TokenValidationMiddleware, api_token=config.settings.api_token
     )
