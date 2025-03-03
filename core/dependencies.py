@@ -1,5 +1,5 @@
 import logging
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, Request
 from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from db.crud import crud
@@ -21,25 +21,23 @@ async def verify_user(request: Request, db: AsyncSession = Depends(get_db)):
     chat_id = request.headers.get("X-Chat-ID")
     if not chat_id:
         logger.warning("Не знайдено chat_id в заголовку запиту")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Missing chat_id header"
-        )
+        return None
+
     try:
         telegram_chat_id = int(chat_id)
-    except ValueError as e:
-        logger.warning(f"Неправильний формат chat_id: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid chat_id format"
-        )
+    except ValueError:
+        logger.warning("Неправильний формат chat_id")
+        return None
+
     logger.info(f"Автентифікація користувача з ID: {telegram_chat_id}")
     result = await crud.read(
         u.User, db, chat_id=telegram_chat_id, relations=(u.User.masters,)
     )
     user = result.unique().scalar_one_or_none()
+
     if user is None:
         logger.warning(f"Користувач з ID: {telegram_chat_id} не знайдений")
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
-        )
+        return None
+
     logger.info(f"Користувач з ID: {telegram_chat_id} пройшов автентифікацію")
     return user
