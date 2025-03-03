@@ -19,9 +19,17 @@ class TokenValidationMiddleware(BaseHTTPMiddleware):
         self.api_token = api_token
 
     async def dispatch(self, request: Request, call_next):
-        logger.info(f"Перевірка токену для запиту {request.url}")
-        if request.url.path in ["/docs", "/redoc", "/openapi.json"]:
+        logger.info(f"path: {request.url.path}")
+        if request.url.path in [
+            "/docs",
+            "/redoc",
+            "/openapi.json",
+            "/api/v1/payments/callback/",
+            "https://10b9-185-70-17-81.ngrok-free.app/api/v1/payments/callback/",
+        ]:
             return await call_next(request)
+        logger.info(f"Перевірка токену для запиту {request.url}")
+
         token = request.headers.get("Authorization")
         if not token or token != f"Bearer {self.api_token}":
             logger.warning("Невірний токен")
