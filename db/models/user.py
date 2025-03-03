@@ -46,6 +46,9 @@ class User(Base):
         secondaryjoin=id == user_master_association.c.master_id,
         backref="clients",
     )
+    subscription = relationship(
+        "Subscription", lazy="joined", uselist=False, back_populates="user"
+    )
 
     def __str__(self):
         return f"Name: {self.name} | UserID: {self.chat_id}"
