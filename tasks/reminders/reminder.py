@@ -1,8 +1,9 @@
+from asgiref.sync import async_to_sync
 from datetime import datetime
 import logging
 
 from ..celery_app import celery_app
-from services.notifications import send_message
+from services.notifications import notification_service
 
 
 logger = logging.getLogger(__name__)
@@ -12,7 +13,11 @@ logger = logging.getLogger(__name__)
 def send_reminder(chat_id: int, message: str):
     """Sends reminder to the user"""
     logger.info("Launch task to send a reminder")
-    send_message(chat_id, message)
+    async_to_sync(_send_reminder)(chat_id, message)
+
+
+async def _send_reminder(chat_id: int, message: str):
+    await notification_service.send_message(chat_id, message)
 
 
 async def schedule_reminder(chat_id: int, reminder_time: datetime, message: str):
