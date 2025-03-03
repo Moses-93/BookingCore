@@ -71,7 +71,7 @@ class SubscriptionService:
         if created_subscription:
             logger.info("Підписка створена успішно")
             await self.notification_manager.send_message(
-                chat_id, PAYMENT_MESSAGE["succes_active_subscription"]
+                chat_id, PAYMENT_MESSAGE["success_active_subscription"]
             )
         else:
             logger.error(
