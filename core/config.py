@@ -28,6 +28,10 @@ class Settings(BaseSettings):
         return self._secret_fetcher.fetch_secret("dev/BookEasyBot/API_TOKEN")
 
     @property
+    def _payment_data(self) -> dict:
+        return self._secret_fetcher.fetch_secret("payment_test_data")
+
+    @property
     def api_token(self):
         return self._api_token.get("API_TOKEN")
 
@@ -46,6 +50,14 @@ class Settings(BaseSettings):
     @property
     def redis_url(self):
         return "redis://localhost:6379/0"
+
+    @property
+    def merchant_secret_key(self):
+        return self._payment_data.get("merchant_secret_key")
+
+    @property
+    def merchant_account(self):
+        return self._payment_data.get("merchant_account")
 
 
 settings = Settings()
