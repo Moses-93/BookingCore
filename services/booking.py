@@ -19,6 +19,9 @@ logger = logging.getLogger(__name__)
 
 class BookingService:
 
+    def __init__(self, notification_service: NotificationService):
+        self.notification_service = notification_service
+
     async def get_master(self, session: AsyncSession, master_id: int) -> Optional[User]:
         """Retrieve the master by ID."""
         master = await new_crud.read(select(User).filter_by(id=master_id), session)
@@ -52,7 +55,7 @@ class BookingService:
 
     async def send_notification(self, chat_id: int, message: str):
         """Send a notification to a user."""
-        send_message(chat_id, message)
+        await self.notification_service.send_message(chat_id, message)
 
     async def schedule_reminder(self, data: Dict[int, str], reminder_time: datetime):
         """Schedule a reminder for a user."""
@@ -125,4 +128,4 @@ class BookingService:
         return new_booking
 
 
-booking_service = BookingService()
+booking_service = BookingService(notification_service)
