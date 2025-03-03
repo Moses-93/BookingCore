@@ -1,7 +1,8 @@
 import logging
 from typing import Optional, List
 from pydantic import BaseModel, Field, field_validator
-from utils.encryption import encription_service
+from .subscription import SubscriptionResponse
+from utils.encryption import encryption_service
 
 
 logger = logging.getLogger(__name__)
@@ -25,7 +26,7 @@ class UserCreate(UserBase):
         logger.info(f"Запуск методу для кодування номеру телефона")
         if not isinstance(value, str):
             logger.warning(f"Номер телефону не є рядком: {value}")
-        return encription_service.encrypt(value)
+        return encryption_service.encrypt(value)
 
 
 class UserUpdate(UserBase):
@@ -56,4 +57,4 @@ class UserResponse(UserBase):
         if not isinstance(value, str):
             logger.warning(f"Номер телефону не є рядком: {value}")
             raise ValueError("Phone number must be a string")
-        return encription_service.decrypt(value)
+        return encryption_service.decrypt(value)

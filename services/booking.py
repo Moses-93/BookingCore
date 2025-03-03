@@ -10,8 +10,8 @@ from db.crud import new_crud
 from schemas.booking import BookingCreate
 from utils.validators import ensure_resource_exists
 from tasks.task_manager import TaskManager
-from .notifications import send_message
-from utils.encryption import encription_service
+from .notifications import notification_service, NotificationService
+from utils.encryption import encryption_service
 
 
 logger = logging.getLogger(__name__)
@@ -46,7 +46,7 @@ class BookingService:
                 service=booking_data.service,
                 date=booking_data.date,
                 time=booking_data.time,
-                phone_number=encription_service.decrypt(user.phone_number),
+                phone_number=encryption_service.decrypt(user.phone_number),
             )
         }
 
