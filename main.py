@@ -10,6 +10,7 @@ from api.v1.endpoints import (
     user,
     feedback,
     subscription,
+    payment,
 )
 from core import middleware, config
 
@@ -45,6 +46,7 @@ def main() -> FastAPI:
     app.include_router(user.router, prefix="/api/v1")
     app.include_router(feedback.router, prefix="/api/v1")
     app.include_router(subscription.router, prefix="/api/v1")
+    app.include_router(payment.router, prefix="/api/v1")
     return app
 
 
