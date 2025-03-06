@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.get("/", response_model=List[business_info.BusinessInfoResponse])
-@requires_role(["admin", "client"])
+@requires_role(["master", "client"])
 async def get_business_info(
     user: User = Depends(verify_user), db: AsyncSession = Depends(get_db)
 ):
@@ -28,7 +28,7 @@ async def get_business_info(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@requires_role(["admin"])
+@requires_role(["master"])
 async def create_business_info(
     business_info: business_info.BusinessInfoCreate,
     db: AsyncSession = Depends(get_db),
@@ -56,7 +56,7 @@ async def create_business_info(
 
 
 @router.patch("/{name}/", status_code=status.HTTP_204_NO_CONTENT)
-@requires_role(["admin"])
+@requires_role(["master"])
 async def update_business_info(
     name: str,
     business_info: business_info.BusinessInfoUpdate,

@@ -19,7 +19,7 @@ router = APIRouter(prefix="/times", tags=["times"])
 
 
 @router.get("/", response_model=list[TimeResponse], status_code=status.HTTP_200_OK)
-@requires_role(["admin", "client", "master"])
+@requires_role(["master", "client", "master"])
 async def get_times(
     master_id: int | None = Query(None),
     date_id: int | None = Query(None),
@@ -39,7 +39,7 @@ async def get_times(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@requires_role(["admin", "master"])
+@requires_role(["master", "master"])
 async def create_time(
     time: TimeCreate,
     db: AsyncSession = Depends(get_db),
@@ -58,7 +58,7 @@ async def create_time(
 
 
 @router.delete("/{time_id}", status_code=status.HTTP_204_NO_CONTENT)
-@requires_role(["admin"])
+@requires_role(["master"])
 async def delete_time(
     time_id: int,
     db: AsyncSession = Depends(get_db),

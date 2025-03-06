@@ -17,7 +17,7 @@ router = APIRouter(prefix="/feedbacks", tags=["feedbacks"])
 
 
 @router.get("/", response_model=List[FeedbackResponse], status_code=status.HTTP_200_OK)
-@requires_role(["admin", "client"])
+@requires_role(["master", "client"])
 async def get_feedback(
     user: User = Depends(verify_user),
     db: AsyncSession = Depends(get_db),

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @router.get(
     "/", response_model=list[service.ServiceResponse], status_code=status.HTTP_200_OK
 )
-@requires_role(["admin", "client", "master"])
+@requires_role(["master", "client", "master"])
 async def get_services(
     master_id: int | None = Query(None),
     db: AsyncSession = Depends(get_db),
@@ -37,7 +37,7 @@ async def get_services(
 @router.post(
     "/", response_model=service.ServiceCreate, status_code=status.HTTP_201_CREATED
 )
-@requires_role(["admin"])
+@requires_role(["master"])
 async def create_service(
     service: service.ServiceCreate,
     db: AsyncSession = Depends(get_db),
@@ -55,7 +55,7 @@ async def create_service(
 
 
 @router.patch("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
-@requires_role(["admin"])
+@requires_role(["master"])
 async def update_service(
     service_id: int,
     service: service.ServiceUpdate,
@@ -73,9 +73,9 @@ async def update_service(
     ensure_resource_exists(result)
 
 
-@router.delete("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
-@requires_role(["admin"])
-async def delete_service(
+@router.patch("/{service_id}", status_code=status.HTTP_204_NO_CONTENT)
+@requires_role(["master"])
+async def deactivate_service(
     service_id: int,
     user: User = Depends(verify_user),
     db: AsyncSession = Depends(get_db),

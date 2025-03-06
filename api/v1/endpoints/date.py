@@ -19,7 +19,7 @@ router = APIRouter(prefix="/dates", tags=["dates"])
 
 
 @router.get("/", response_model=List[date.DateResponse], status_code=status.HTTP_200_OK)
-@requires_role(["admin", "client", "master"])
+@requires_role(["master", "client", "master"])
 async def get_dates(
     master_id: int | None = Query(None),
     user: User = Depends(verify_user),
@@ -43,7 +43,7 @@ async def get_dates(
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-@requires_role(["admin", "master"])
+@requires_role(["master", "master"])
 async def create_date(
     date: date.DateCreate,
     user: User = Depends(verify_user),
@@ -66,9 +66,9 @@ async def create_date(
     return created_date
 
 
-@router.delete("/{date_id}", status_code=status.HTTP_204_NO_CONTENT)
-@requires_role(["admin"])
-async def delete_date(
+@router.patch("/{date_id}", status_code=status.HTTP_204_NO_CONTENT)
+@requires_role(["master"])
+async def deactivate_date(
     date_id: int,
     user: User = Depends(verify_user),
     db: AsyncSession = Depends(get_db),

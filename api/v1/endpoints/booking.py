@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 @router.get("/", status_code=status.HTTP_200_OK)
-@requires_role(["master", "client", "admin"])
+@requires_role(["master", "client", "master"])
 async def get_bookings(
     is_active: bool | None = Query(None),
     limit: int = Query(default=5, ge=1, le=50),
