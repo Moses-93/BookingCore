@@ -3,8 +3,8 @@ import logging
 from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.dependencies import get_db
-from decorators.permissions import requires_role, get_current_user
+from core.dependencies import get_db, get_current_user
+from decorators.permissions import requires_role
 
 from db.models.user import User
 from schemas.payment import PaymentCreate

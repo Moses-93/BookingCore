@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
 
-from core.dependencies import verify_user
+from core.dependencies import get_current_user
 from core.dependencies import get_db
 from db.crud import crud
 from db.models.booking import Date
@@ -22,7 +22,7 @@ router = APIRouter(prefix="/dates", tags=["dates"])
 @requires_role(["master", "client", "master"])
 async def get_dates(
     master_id: int | None = Query(None),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     if master_id is None:
@@ -46,7 +46,7 @@ async def get_dates(
 @requires_role(["master", "master"])
 async def create_date(
     date: date.DateCreate,
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
 
@@ -70,7 +70,7 @@ async def create_date(
 @requires_role(["master"])
 async def deactivate_date(
     date_id: int,
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     result = await crud.delete(model=Date, session=db, id=date_id)

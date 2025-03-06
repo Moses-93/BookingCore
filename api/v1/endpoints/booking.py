@@ -2,7 +2,7 @@ import logging
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
-from core.dependencies import get_db, verify_user
+from core.dependencies import get_db, get_current_user
 from decorators.permissions import requires_role
 from schemas import booking
 from db.models.booking import Booking
@@ -22,7 +22,7 @@ async def get_bookings(
     is_active: bool | None = Query(None),
     limit: int = Query(default=5, ge=1, le=50),
     offset: int = Query(default=0),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     filters = {"is_active": is_active} if is_active is not None else {}
@@ -38,7 +38,7 @@ async def get_bookings(
 async def create_booking(
     booking: booking.BookingCreate,
     db: AsyncSession = Depends(get_db),
-    user: user.User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     master_id: int | None = Query(None),
 ):
     if not master_id:
@@ -53,7 +53,7 @@ async def create_booking(
 @requires_role(["client"])
 async def deactivate_book(
     booking_id: int,
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     result = await crud.update(

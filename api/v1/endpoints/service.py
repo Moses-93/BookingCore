@@ -7,8 +7,9 @@ from db.models.service import Service
 from db.models.user import User
 from schemas import service
 from decorators.permissions import requires_role
-from core.dependencies import verify_user, get_db
-from utils.validators import check_number_masters, ensure_resource_exists
+from core.dependencies import get_current_user, get_db
+from utils.validators import ensure_resource_exists
+from services.user import user_tools
 
 
 router = APIRouter(prefix="/services", tags=["services"])
@@ -22,7 +23,7 @@ logger = logging.getLogger(__name__)
 async def get_services(
     master_id: int | None = Query(None),
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
 ):
     if master_id is None:
         master = check_number_masters(user)
@@ -41,7 +42,7 @@ async def get_services(
 async def create_service(
     service: service.ServiceCreate,
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
 ):
     result = await crud.create(
         model=Service,
@@ -60,7 +61,7 @@ async def update_service(
     service_id: int,
     service: service.ServiceUpdate,
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
 ):
     update_service = service.model_dump(exclude_unset=True)
 
@@ -77,7 +78,7 @@ async def update_service(
 @requires_role(["master"])
 async def deactivate_service(
     service_id: int,
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     result = await crud.delete(model=Service, session=db, id=service_id)

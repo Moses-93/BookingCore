@@ -13,7 +13,8 @@ logger = logging.getLogger(__name__)
 
 @router.get("/", response_model=UserResponse, status_code=status.HTTP_200_OK)
 @requires_role(["admin", "master", "client"])
-async def get_user(user: User = Depends(verify_user)):
+async def get_user(user: User = Depends(get_current_user)):
+    logger.info(f"User: {user}")
     return user
 
 

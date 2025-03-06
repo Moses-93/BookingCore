@@ -3,9 +3,9 @@ import logging
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.dependencies import verify_user, get_db
+from core.dependencies import get_db, get_current_user
 from db.models.user import User
-from decorators.permissions import requires_role, get_current_user
+from decorators.permissions import requires_role
 from services.subscription import subscription_plan_service, subscription_service
 from schemas import subscription as s
 
@@ -34,7 +34,7 @@ async def get_subscription_plan(
 @router.get("/", status_code=status.HTTP_200_OK)
 @requires_role(["master"])
 async def get_subscription(
-    user: User = Depends(verify_user), db: AsyncSession = Depends(get_db)
+    user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)
 ):
     return await subscription_service.get_subscription(db, user.id)
 
@@ -43,7 +43,7 @@ async def get_subscription(
 @requires_role(["master"])
 async def create_subscription(
     plan: s.SubscriptionActivate,
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     logger.info(f"plan:{plan}")

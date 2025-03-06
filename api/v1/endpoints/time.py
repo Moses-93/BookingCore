@@ -3,7 +3,7 @@ import logging
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.dependencies import verify_user
+from core.dependencies import get_current_user
 from core.dependencies import get_db
 from db.crud import crud
 from db.models.user import User
@@ -24,7 +24,7 @@ async def get_times(
     master_id: int | None = Query(None),
     date_id: int | None = Query(None),
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
 ):
 
     if master_id is None:
@@ -43,7 +43,7 @@ async def get_times(
 async def create_time(
     time: TimeCreate,
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
 ):
     new_time = await crud.create(
         model=Time,
@@ -62,7 +62,7 @@ async def create_time(
 async def delete_time(
     time_id: int,
     db: AsyncSession = Depends(get_db),
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
 ):
     result = await crud.delete(model=Time, session=db, id=time_id)
     logger.info(f"Time with id {time_id} deleted successfully")

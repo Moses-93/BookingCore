@@ -3,7 +3,7 @@ import logging
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
-from core.dependencies import verify_user, get_db
+from core.dependencies import get_current_user, get_db
 from db.crud import crud
 from db.models.feedback import Feedback
 from db.models.user import User
@@ -31,7 +31,7 @@ async def get_feedback(
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_feedback(
     feedback: FeedbackCreate,
-    user: User = Depends(verify_user),
+    user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     (user,) = user
