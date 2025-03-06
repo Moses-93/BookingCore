@@ -5,40 +5,25 @@ from typing import List
 
 from core.dependencies import get_current_user
 from core.dependencies import get_db
-from db.crud import crud
-from db.models.booking import Date
 from db.models.user import User
 from schemas import date
 from decorators.permissions import requires_role
-from utils.validators import ensure_resource_exists, check_number_masters
-from tasks.deactivate_dates import schedule_deactivate_dates
-
+from utils.validators import ensure_resource_exists
+from services.datetime_service import date_service
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/dates", tags=["dates"])
 
 
 @router.get("/", response_model=List[date.DateResponse], status_code=status.HTTP_200_OK)
-@requires_role(["master", "client", "master"])
+@requires_role(["master", "client"])
 async def get_dates(
     master_id: int | None = Query(None),
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    if master_id is None:
-        master = check_number_masters(user)
-        master_id = master.id
-
-    result = await crud.read(
-        model=Date,
-        session=db,
-        master_id=master_id,
-        active=True,
-    )
-    dates = result.unique().scalars().all()
-    logger.info(f"Dates fetched: {dates}")
+    dates = await date_service.get_dates(db, user, master_id)
     ensure_resource_exists(dates)
-
     return dates
 
 
@@ -49,20 +34,8 @@ async def create_date(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-
-    result = await crud.read(model=Master, session=db, user_id=user.id)
-    master = result.unique().scalar_one_or_none()
-    created_date = await crud.create(
-        model=Date,
-        session=db,
-        date=date.date,
-        del_time=date.del_time,
-        master_id=master.id,
-    )
-    ensure_resource_exists(
-        created_date, status_code=400, message="Failed to create date"
-    )
-    await schedule_deactivate_dates(created_date.id, created_date.del_time)
+    created_date = await date_service.create_date(db, user.id, date)
+    ensure_resource_exists()
     return created_date
 
 
@@ -73,5 +46,5 @@ async def deactivate_date(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    result = await crud.delete(model=Date, session=db, id=date_id)
+    result = await date_service.deactivate_date(db, date_id)
     ensure_resource_exists(result)
