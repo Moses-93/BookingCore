@@ -22,6 +22,6 @@ class BusinessInfo(Base):
     created_at = Column(DateTime, default=func.now())
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
     master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
-    
+
     def __str__(self):
         return f"Назва: {self.name} | Адреса: {self.address} | Телефон: {self.phone_number}"
