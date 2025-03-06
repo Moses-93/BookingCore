@@ -1,6 +1,6 @@
 import logging
-from fastapi import Depends, Request
-from typing import AsyncGenerator
+from fastapi import Depends, HTTPException, Request, status
+from typing import AsyncGenerator, Optional
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from db.crud import crud
 from db.models import user as u
@@ -40,4 +40,14 @@ async def verify_user(request: Request, db: AsyncSession = Depends(get_db)):
         return None
 
     logger.info(f"Користувач з ID: {telegram_chat_id} пройшов автентифікацію")
+    return user
+
+
+async def get_current_user(request: Request) -> Optional[u.User]:
+    user = getattr(request.state, "user", None)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+        )
     return user
