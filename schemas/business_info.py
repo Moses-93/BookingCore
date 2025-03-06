@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field, HttpUrl, model_validator
 class BusinessInfoBase(BaseModel):
     name: str = Field(..., min_length=2, max_length=50)
     address: str = Field(..., min_length=10, max_length=60)
-    phone: str = Field(..., min_length=13, max_length=13, pattern=r"^\+380\d{9}$")
+    phone_number: str = Field(..., min_length=13, max_length=13, pattern=r"^\+380\d{9}$")
     
 
 class BusinessInfoCreate(BusinessInfoBase):
@@ -19,7 +19,7 @@ class BusinessInfoCreate(BusinessInfoBase):
 class BusinessInfoUpdate(BusinessInfoBase):
     name: Optional[str] = Field(None, min_length=2, max_length=50)
     address: Optional[str] = Field(None, min_length=10, max_length=60)
-    phone: Optional[str] = Field(
+    phone_number: Optional[str] = Field(
         None, min_length=13, max_length=13, pattern=r"^\+380\d{9}$"
     )
     google_maps_url: Optional[HttpUrl] = Field(None, max_length=200)
@@ -34,7 +34,7 @@ class BusinessInfoUpdate(BusinessInfoBase):
 
 class BusinessInfoResponse(BusinessInfoBase):
     id: int
-    phone: str
+    phone_number: str
     google_maps_link: Optional[str]
     telegram_link: Optional[str]
     instagram_link: Optional[str]
