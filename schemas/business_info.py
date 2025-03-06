@@ -6,11 +6,10 @@ from pydantic import BaseModel, Field, HttpUrl, model_validator
 class BusinessInfoBase(BaseModel):
     name: str = Field(..., min_length=2, max_length=50)
     address: str = Field(..., min_length=10, max_length=60)
-
+    phone: str = Field(..., min_length=13, max_length=13, pattern=r"^\+380\d{9}$")
+    
 
 class BusinessInfoCreate(BusinessInfoBase):
-    phone: str = Field(..., min_length=13, max_length=13, pattern=r"^\+380\d{9}$")
-    working_hours: str = Field(..., example="9:00-18:00", min_length=10, max_length=12)
     google_maps_link: Optional[str] = Field(None, max_length=200)
     description: Optional[str] = Field(None, min_length=10, max_length=200)
     telegram_link: Optional[str] = None
@@ -22,9 +21,6 @@ class BusinessInfoUpdate(BusinessInfoBase):
     address: Optional[str] = Field(None, min_length=10, max_length=60)
     phone: Optional[str] = Field(
         None, min_length=13, max_length=13, pattern=r"^\+380\d{9}$"
-    )
-    working_hours: Optional[str] = Field(
-        None, example="9:00-18:00", min_length=10, max_length=12
     )
     google_maps_url: Optional[HttpUrl] = Field(None, max_length=200)
     description: Optional[str] = Field(None, min_length=10, max_length=200)
@@ -39,7 +35,6 @@ class BusinessInfoUpdate(BusinessInfoBase):
 class BusinessInfoResponse(BusinessInfoBase):
     id: int
     phone: str
-    working_hours: str
     google_maps_link: Optional[str]
     telegram_link: Optional[str]
     instagram_link: Optional[str]
