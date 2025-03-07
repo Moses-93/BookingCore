@@ -12,14 +12,12 @@ logger = logging.getLogger(__name__)
 
 
 @celery_app.task(name="tasks.deactivation.date.deactivate")
-def deactivate(booking_id: int):
+def deactivate_date(date_id: int):
     logger.info("Launch task to deactivate date")
-    async_to_sync(deactivate_date_async)(booking_id)
+    async_to_sync(_deactivate_date)(date_id)
 
 
-async def deactivate_date_async(
-    date_id: int,
-):
+async def _deactivate_date(date_id: int):
     query = update(Date).filter(Date.id == date_id).values(is_active=False)
     async for session in get_db():
         result = await new_crud.update(query, session)
@@ -35,4 +33,4 @@ async def schedule_deactivate_date(date_id: int, deactivate_time: datetime):
     if delay <= 0:
         logger.warning(f"date has a past value.")
         return
-    deactivate.apply_async(args=[date_id], countdown=int(delay))
+    deactivate_date.apply_async(args=[date_id], countdown=int(delay))
