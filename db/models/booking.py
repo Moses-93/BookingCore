@@ -34,8 +34,9 @@ class Time(Base):
     is_active = Column(Boolean, default=True, index=True)
     time = Column(Time, nullable=False)
     date_id = Column(
-        Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False, index=True
+        Integer, ForeignKey("dates.id", ondelete="CASCADE"), nullable=False
     )
+    master_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True)
     created_at = Column(DateTime, default=func.now())
 
     date = relationship("Date", uselist=False, backref="time", lazy="joined")
