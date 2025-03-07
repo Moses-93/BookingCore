@@ -9,11 +9,16 @@ from db.models.user import User
 from schemas import date, time
 from decorators.permissions import requires_role
 from utils.validators import ensure_resource_exists
-from services.datetime_service import date_service, time_service
+from services.schedules.factory import ServiceFactory
+
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/schedules", tags=["dates"])
 
+service_factory = ServiceFactory()
+
+date_service = service_factory.create_date_service()
+time_service = service_factory.create_time_service()
 
 @router.get(
     "/dates", response_model=List[date.DateResponse], status_code=status.HTTP_200_OK
