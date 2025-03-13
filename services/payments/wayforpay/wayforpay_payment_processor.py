@@ -103,7 +103,7 @@ class WayForPayPaymentProcessor:
             "productPrice": [str(plan_price)],
         }
 
-        signature = self.signature_manager.generate_signature(params)
+        signature = await self.signature_manager.generate_signature(params)
 
         params["transactionType"] = "CREATE_INVOICE"
         params["merchantSignature"] = signature
