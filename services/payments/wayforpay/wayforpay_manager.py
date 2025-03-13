@@ -4,7 +4,6 @@ from core.config import settings
 from typing import Dict, Any
 from services.payments import (
     WayForPayCallbackHandler,
-    WayForPayManager,
     WayForPayPaymentProcessor,
     WayForPaySignature,
     payment_service,
