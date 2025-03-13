@@ -2,10 +2,14 @@ import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.config import settings
 from typing import Dict, Any
-from .wayforpay_signature import WayForPaySignature
-from .wayforpay_callback import WayForPayCallbackHandler
-from .wayforpay_payment_processor import WayForPayPaymentProcessor
-from ..payment_service import payment_service, PaymentService
+from services.payments import (
+    WayForPayCallbackHandler,
+    WayForPayManager,
+    WayForPayPaymentProcessor,
+    WayForPaySignature,
+    payment_service,
+    PaymentService,
+)
 
 
 logger = logging.getLogger(__name__)
