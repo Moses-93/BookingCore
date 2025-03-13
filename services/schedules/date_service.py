@@ -30,14 +30,16 @@ class DateScheduleService(BaseScheduleService):
     ) -> Optional[Date]:
         date_data_dump = date_data.model_dump()
         created_date = await self.create(session, user_id, date_data_dump)
-        await self.deactivation_date_scheduler(created_date.id, created_date.deactivation_time)
+        await self.deactivation_date_scheduler(
+            created_date.id, created_date.deactivation_time
+        )
         return created_date
 
     async def get_dates(
         self, session: AsyncSession, user: User, master_id: int
     ) -> Optional[List[Date]]:
         return await self.get_all(session, user, master_id)
-    
+
     async def get_date(self, session: AsyncSession, date_id: int) -> Optional[Date]:
         return await self.get_one(session, date_id)
 

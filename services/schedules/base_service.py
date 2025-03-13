@@ -11,12 +11,15 @@ from services.user import UserTools
 
 logger = logging.getLogger(__name__)
 
+
 class BaseScheduleService:
     def __init__(self, user_tools: UserTools, model: Type[DeclarativeBase]):
         self.user_tools = user_tools
         self.model = model
 
-    async def create(self, session: AsyncSession, user_id: int, data: Dict[str, Any]) -> Optional[Type[DeclarativeBase]]:
+    async def create(
+        self, session: AsyncSession, user_id: int, data: Dict[str, Any]
+    ) -> Optional[Type[DeclarativeBase]]:
         data["master_id"] = user_id
         stmt = self.model(**data)
         created_obj = await new_crud.create(stmt, session)
@@ -34,7 +37,9 @@ class BaseScheduleService:
         objs = result.unique().scalars().all()
         return objs
 
-    async def get_one(self, session: AsyncSession, obj_id: int) -> Optional[DeclarativeBase]:
+    async def get_one(
+        self, session: AsyncSession, obj_id: int
+    ) -> Optional[DeclarativeBase]:
         return await session.get(self.model, obj_id)
 
     async def deactivate(self, session: AsyncSession, obj_id: int) -> bool:
@@ -42,4 +47,3 @@ class BaseScheduleService:
             update(self.model).where(self.model.id == obj_id).values(is_active=False),
             session,
         )
-    

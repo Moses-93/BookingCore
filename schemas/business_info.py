@@ -6,8 +6,10 @@ from pydantic import BaseModel, Field, HttpUrl, model_validator
 class BusinessInfoBase(BaseModel):
     name: str = Field(..., min_length=2, max_length=50)
     address: str = Field(..., min_length=10, max_length=60)
-    phone_number: str = Field(..., min_length=13, max_length=13, pattern=r"^\+380\d{9}$")
-    
+    phone_number: str = Field(
+        ..., min_length=13, max_length=13, pattern=r"^\+380\d{9}$"
+    )
+
 
 class BusinessInfoCreate(BusinessInfoBase):
     google_maps_link: Optional[str] = Field(None, max_length=200)

@@ -20,8 +20,7 @@ class TimeScheduleService(BaseScheduleService):
         super().__init__(user_tools, Time)
         self.deactivation_task = deactivation_task
 
-    async def deactivation_time_scheduler(
-        self, time_id: int, date: datetime, time):
+    async def deactivation_time_scheduler(self, time_id: int, date: datetime, time):
         await self.deactivation_task.time(time_id, date, time)
 
     async def create_time(
@@ -43,7 +42,7 @@ class TimeScheduleService(BaseScheduleService):
         self, session: AsyncSession, user: User, master_id: int
     ) -> Optional[List[Time]]:
         return await self.get_all(session, user, master_id)
-    
+
     async def get_time(self, session: AsyncSession, time_id: int) -> Optional[Time]:
         return await self.get_one(session, time_id)
 
