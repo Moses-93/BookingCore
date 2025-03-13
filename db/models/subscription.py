@@ -1,5 +1,6 @@
 from sqlalchemy.orm import relationship
 from sqlalchemy import (
+    Boolean,
     String,
     Integer,
     Float,
@@ -17,6 +18,7 @@ class SubscriptionPlan(Base):
     name = Column(String, unique=True, nullable=False)
     duration_days = Column(Integer, nullable=False)
     price = Column(Float, nullable=False, default=0.0)
+    is_active = Column(Boolean, default=True, index=True)
     description = Column(String, nullable=True)
     created_at = Column(DateTime, default=func.now())
 
