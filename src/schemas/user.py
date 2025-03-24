@@ -21,7 +21,7 @@ class UserCreate(UserBase):
 
     @field_validator("phone_number", mode="before")
     @classmethod
-    def enctypy_phone(csl, value: str) -> str:
+    def encrypt_phone(csl, value: str) -> str:
         logger.info(f"Запуск методу для кодування номеру телефона")
         if not isinstance(value, str):
             logger.warning(f"Номер телефону не є рядком: {value}")
