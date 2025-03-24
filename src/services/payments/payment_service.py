@@ -16,18 +16,20 @@ class PaymentService:
 
     def __init__(
         self,
-        subscription_manager: SubscriptionService,
-        notification_manager: NotificationService,
+        crud_repository: CRUDRepository,
+        subscription_service: SubscriptionService,
+        notification_service: NotificationService,
     ):
-        self.subscription_manager = subscription_manager
-        self.notification_manager = notification_manager
+        self.crud_repository = crud_repository
+        self.subscription_service = subscription_service
+        self.notification_service = notification_service
 
     async def get_payment(
         self, session: AsyncSession, order_id: str
-    ) -> Optional[p.Payment]:
+    ) -> Optional[Payment]:
         """Отримує платіж за order_id."""
-        result = await new_crud.read(
-            select(p.Payment).filter_by(order_id=order_id), session
+        result = await self.crud_repository.read(
+            select(Payment).filter_by(order_id=order_id), session
         )
         return result.scalar()
 
@@ -40,13 +42,13 @@ class PaymentService:
         amount: int,
     ) -> None:
         """Створює новий платіж."""
-        payment = p.Payment(
+        payment = Payment(
             subscription_plan_id=subscription_plan_id,
             user_id=user_id,
             order_id=order_id,
             amount=amount,
         )
-        await new_crud.create(payment, session)
+        await self.crud_repository.create(payment, session)
 
     async def update_payment_status(
         self,
@@ -56,22 +58,22 @@ class PaymentService:
         transaction_status: str,
     ) -> None:
         """Оновлює статус платежу."""
-        await new_crud.update(
-            update(p.Payment)
-            .where(p.Payment.order_id == order_id)
+        await self.crud_repository.update(
+            update(Payment)
+            .where(Payment.order_id == order_id)
             .values(payment_method=payment_method, status=transaction_status),
             session,
         )
 
     async def handle_successful_payment(
-        self, session: AsyncSession, payment: p.Payment
+        self, session: AsyncSession, payment: Payment
     ) -> None:
         """Обробляє успішний платіж."""
-        user = await session.get(u.User, payment.user_id)
+        user = await session.get(User, payment.user_id)
         await self.notification_manager.send_message(
             user.chat_id, PAYMENT_MESSAGE["received_payment"]
         )
-        await self.subscription_manager.create_subscription(
+        await self.subscription_service.create_subscription(
             session, payment.user_id, payment.subscription_plan_id, user.chat_id
         )
 
@@ -97,6 +99,3 @@ class PaymentService:
             logger.warning(
                 f"Статус платежу: {transaction_status}! Платіж не підтверджено. Підписку не нараховано."
             )
-
-
-payment_service = PaymentService(subscription_service, notification_service)
