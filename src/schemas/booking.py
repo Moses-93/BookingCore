@@ -29,10 +29,10 @@ class BookingUpdate(BookingBase):
 
 class BookingResponse(BookingBase):
     id: int
-    user: schemas.user.UserResponse
-    service: schemas.service.ServiceResponse
-    date: schemas.date.DateResponse
-    time: schemas.time.TimeResponse
+    user: UserResponse
+    service: ServiceResponse
+    date: DateResponse
+    time: TimeResponse
     created_at: datetime
 
     class Config:
