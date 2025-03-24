@@ -49,9 +49,9 @@ class DependencyFactory:
 
     def __del__(self):
         logger.info(f"Delete instance a factory: {self}")
-    
+
     def __init__(self):
-        logger.info(f"Call init {self} instance")
+        logger.info(f"Call __init__ DependencyFactory for an instance {self}")
         self.crud_repository = CRUDRepository()
         self.user_service = UserService(self.crud_repository)
         self.redis_cache = RedisCacheFactory()

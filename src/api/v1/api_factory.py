@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter
 from src.api.v1.handler_factory import HandlerFactory
 from src.api.v1.endpoints import (
@@ -11,11 +12,13 @@ from src.api.v1.endpoints import (
     SubscriptionRouter,
 )
 
+logger = logging.getLogger(__name__)
+
 
 class APIFactory:
-    def __init__(self):
-        self.deps = DependencyFactory()
-        self.handlers = HandlerFactory(self.deps)
+    def __init__(self, handlers: HandlerFactory):
+        logger.info(f"Call __init__ APIFactory for an instance {self}")
+        self.handlers = handlers
 
     def create_service_router(self):
         return ServiceRouter(self.handlers.create_service_handler())

@@ -13,9 +13,10 @@ from src.api.v1.endpoints import (
 
 logger = logging.getLogger(__name__)
 
+
 class HandlerFactory:
     def __init__(self, deps: DependencyFactory):
-        logger.info(f"Call init for an instance {self}")
+        logger.info(f"Call __init__ HandlerFactory for an instance {self}")
         self.deps = deps
 
     def create_service_handler(self):
