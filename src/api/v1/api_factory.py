@@ -44,7 +44,7 @@ class APIFactory:
     def create_subscription_router(self):
         return SubscriptionRouter(self.handlers.create_subscription_handler())
 
-    def create_main_v1_router(self):
+    def create_main_router_v1(self):
 
         main_v1_router = APIRouter()
 
@@ -56,9 +56,9 @@ class APIFactory:
             self.create_schedule_router(),
             self.create_service_router(),
             self.create_subscription_router(),
-            self.create_user_router()
+            self.create_user_router(),
         ]
         for router in routers:
             main_v1_router.include_router(router.router)
-        
+
         return main_v1_router
