@@ -1,12 +1,12 @@
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import update, select
-from db.repository import CRUDRepository
-from db.models import Service, User
-from schemas import ServiceCreate
+from src.db.repository import CRUDRepository
+from src.db.models import Service, User
+from src.schemas import ServiceCreate
 
-from utils.redis_cache import RedisCacheFactory
-from services.user import UserService
+from src.utils.redis_cache import RedisCacheFactory
+from src.services.user import UserService
 
 
 class ServiceRepository:

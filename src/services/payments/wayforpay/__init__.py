@@ -1,2 +1,1 @@
-from services.payments.wayforpay.wayforpay_manager import WayForPayManager
-from .wayforpay_factory import create_wfp_manager
+

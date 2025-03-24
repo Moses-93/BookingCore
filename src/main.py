@@ -1,8 +1,11 @@
+import os
 import sys
 import logging
 from fastapi import FastAPI
-from api.v1.router import create_main_router
-from core import middleware, config
+from src.core.dependencies.factories import get_api_factory
+from src.core.dependencies.database import register_db_shutdown_event
+
+from src.core import middleware, config
 
 
 logging.basicConfig(
