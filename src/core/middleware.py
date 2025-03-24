@@ -1,8 +1,8 @@
 import logging
+import datetime
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
-import datetime
 
 from src.db.models.subscription import Subscription
 from src.db.models.user import User
