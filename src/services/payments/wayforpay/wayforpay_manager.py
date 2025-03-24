@@ -1,12 +1,10 @@
 import logging
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.config import settings
 from typing import Dict, Any
 from src.services.payments import (
     WayForPayCallbackHandler,
     WayForPayPaymentProcessor,
     WayForPaySignature,
-    payment_service,
     PaymentService,
 )
 
@@ -78,18 +76,3 @@ class WayForPayManager:
         else:
             logger.error("Invalid signature received. Returning 'decline' status.")
         return response
-
-
-merchant_secret_key = settings.merchant_secret_key
-merchant_account = settings.merchant_account
-wayforpay_signature = WayForPaySignature(merchant_secret_key)
-wayforpay_callback_handler = WayForPayCallbackHandler(wayforpay_signature)
-wayforpay_payment_processor = WayForPayPaymentProcessor(
-    wayforpay_signature, merchant_account
-)
-wfp_manager = WayForPayManager(
-    wayforpay_signature,
-    wayforpay_callback_handler,
-    wayforpay_payment_processor,
-    payment_service,
-)
