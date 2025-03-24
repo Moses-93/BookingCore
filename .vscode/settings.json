@@ -1,0 +1,21 @@
+{
+    "cSpell.enabledFileTypes": {
+        "python": true
+    },
+    "cSpell.words": [
+        "колбек",
+        "Andrii",
+        "backref",
+        "levelname",
+        "loglevel",
+        "ondelete",
+        "onupdate",
+        "primaryjoin",
+        "redoc",
+        "secondaryjoin",
+        "selectinload",
+        "sessionmaker",
+        "uselist",
+        "wayforpay"
+    ]
+}
