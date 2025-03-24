@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from db.models import User
-from services.service.service_repository import ServiceRepository
-from schemas import ServiceCreate, ServiceUpdate
+from src.db.models import User
+from src.services.service.service_repository import ServiceRepository
+from src.schemas import ServiceCreate, ServiceUpdate
 
 
 class ServiceManager:

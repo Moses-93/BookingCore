@@ -2,7 +2,7 @@ import logging
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.config import settings
 from typing import Dict, Any
-from services.payments import (
+from src.services.payments import (
     WayForPayCallbackHandler,
     WayForPayPaymentProcessor,
     WayForPaySignature,

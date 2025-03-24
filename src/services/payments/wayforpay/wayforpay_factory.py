@@ -1,11 +1,11 @@
-from core.config import settings
-from services.payments.payment_service import PaymentService
-from services.payments.wayforpay.wayforpay_callback import WayForPayCallbackHandler
-from services.payments.wayforpay.wayforpay_manager import WayForPayManager
-from services.payments.wayforpay.wayforpay_payment_processor import (
+from src.core.config import settings
+from src.services.payments.payment_service import PaymentService
+from src.services.payments.wayforpay.wayforpay_callback import WayForPayCallbackHandler
+from src.services.payments.wayforpay.wayforpay_manager import WayForPayManager
+from src.services.payments.wayforpay.wayforpay_payment_processor import (
     WayForPayPaymentProcessor,
 )
-from services.payments.wayforpay.wayforpay_signature import WayForPaySignature
+from src.services.payments.wayforpay.wayforpay_signature import WayForPaySignature
 
 
 def create_wfp_manager(payment_service: PaymentService) -> WayForPayManager:

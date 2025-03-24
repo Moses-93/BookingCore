@@ -1,4 +1,4 @@
-from services.business_info.business_info_service import BusinessInfoService
+from src.services.business_info.business_info_service import BusinessInfoService
 
 
 class BusinessInfoManager:

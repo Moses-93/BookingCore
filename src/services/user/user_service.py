@@ -3,9 +3,9 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import insert, select, delete, update
 from typing import Any, Dict, Optional
-from db.repository import CRUDRepository
-from db.models.user import User, user_master_association
-from schemas.user import UserCreate
+from src.db.repository import CRUDRepository
+from src.db.models.user import User, user_master_association
+from src.schemas.user import UserCreate
 
 
 logger = logging.getLogger(__name__)

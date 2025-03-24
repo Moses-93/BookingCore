@@ -2,11 +2,12 @@ import logging
 from fastapi import Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from decorators.permissions import requires_role
-from core.dependencies import get_current_user, get_db
-from db.models import User
-from schemas import ServiceCreate, ServiceUpdate
-from services.service import ServiceManager
+from src.decorators.permissions import requires_role
+from src.core.dependencies.auth import get_current_user
+from src.core.dependencies.database import get_db
+from src.db.models import User
+from src.schemas import ServiceCreate, ServiceUpdate
+from src.services.service import ServiceManager
 
 
 logger = logging.getLogger(__name__)

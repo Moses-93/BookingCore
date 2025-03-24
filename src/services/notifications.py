@@ -1,6 +1,6 @@
 import logging
 from httpx import RequestError
-from core.config import settings
+from src.core.config import settings
 from .http_client import HTTPClient
 
 

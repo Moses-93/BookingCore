@@ -3,13 +3,11 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import update, select
 
-from core.constants import PAYMENT_MESSAGE
-
-from db.models import payment as p, user as u
-from db.crud import new_crud
-
-from ..notifications import notification_service, NotificationService
-from ..subscription import subscription_service, SubscriptionService
+from src.core.constants import PAYMENT_MESSAGE
+from src.db.models import User, Payment
+from src.db.repository import CRUDRepository
+from src.services.notifications import NotificationService
+from src.services.subscription import SubscriptionService
 
 logger = logging.getLogger(__name__)
 

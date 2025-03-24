@@ -1,7 +1,6 @@
 from fastapi import APIRouter
-from core.dependency_factory import DependencyFactory
-from api.v1.handler_factory import HandlerFactory
-from api.v1.endpoints import (
+from src.api.v1.handler_factory import HandlerFactory
+from src.api.v1.endpoints import (
     ServiceRouter,
     BookingRouter,
     UserRouter,

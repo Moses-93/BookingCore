@@ -2,10 +2,10 @@ import logging
 from datetime import date, time, datetime
 from sqlalchemy import update
 from asgiref.sync import async_to_sync
-from core.dependencies import get_db
-from db.models.booking import Booking
-from db.crud import new_crud
-from ..celery_app import celery_app
+from src.core.dependencies.database import get_db
+from src.db.models.booking import Booking
+from src.db.repository import CRUDRepository
+from ..celery_worker import celery_app
 
 
 logger = logging.getLogger(__name__)

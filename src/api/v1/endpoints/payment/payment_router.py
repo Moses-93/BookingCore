@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status
-from api.v1.endpoints.payment import PaymentHandler
+from src.api.v1.endpoints.payment import PaymentHandler
 
 
 class PaymentRouter:

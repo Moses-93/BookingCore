@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status
-from api.v1.endpoints.booking import BookingHandler
+from src.api.v1.endpoints.booking import BookingHandler
 
 
 class BookingRouter:

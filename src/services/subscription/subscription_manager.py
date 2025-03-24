@@ -1,4 +1,4 @@
-from services.subscription.subscription_service import (
+from src.services.subscription.subscription_service import (
     SubscriptionService,
     SubscriptionPlanService,
 )

@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, status
-from api.v1.endpoints.business_info import BusinessInfoHandler
-from schemas import BusinessInfoResponse
+from src.api.v1.endpoints.business_info import BusinessInfoHandler
+from src.schemas import BusinessInfoResponse
 
 
 class BusinessInfoRouter:

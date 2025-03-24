@@ -1,5 +1,5 @@
-from services.schedule.date_service import DateScheduleService
-from services.schedule.time_service import TimeScheduleService
+from src.services.schedule.date_service import DateScheduleService
+from src.services.schedule.time_service import TimeScheduleService
 
 
 class ScheduleManager:

@@ -3,11 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 from datetime import date, datetime, time, timedelta
 
-from db.models import Time, User
-from db.repository import CRUDRepository
-from schemas.time import TimeCreate
-from services.user import UserService
-from tasks.deactivation import DeactivateTimeTask
+from src.db.models import Time, User
+from src.db.repository import CRUDRepository
+from src.schemas.time import TimeCreate
+from src.services.user import UserService
+from src.tasks.deactivation import DeactivateTimeTask
 from .base_service import BaseScheduleService
 
 logger = logging.getLogger(__name__)

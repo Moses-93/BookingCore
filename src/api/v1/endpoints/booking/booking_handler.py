@@ -2,11 +2,12 @@ import logging
 from typing import Optional
 from fastapi import Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.dependencies import get_current_user, get_db
-from db.models import User
-from decorators.permissions import requires_role
-from schemas import BookingCreate
-from services.booking import BookingManager
+from src.core.dependencies.database import get_db
+from src.core.dependencies.auth import get_current_user
+from src.db.models import User
+from src.decorators.permissions import requires_role
+from src.schemas import BookingCreate
+from src.services.booking import BookingManager
 
 logger = logging.getLogger(__name__)
 

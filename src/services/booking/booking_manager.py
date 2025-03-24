@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from db.models.user import User
-from schemas.booking import BookingCreate
+from src.db.models.user import User
+from src.schemas.booking import BookingCreate
 from typing import List, Optional
-from db.models import Booking
-from services.booking.booking_service import (
+from src.db.models import Booking
+from src.services.booking.booking_service import (
     BookingDeactivationService,
     BookingNotificationService,
     BookingReminderService,

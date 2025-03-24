@@ -1,8 +1,8 @@
 import logging
 from asgiref.sync import async_to_sync
 
-from tasks.celery_worker import celery_app
-from services.notifications import NotificationService
+from src.tasks.celery_worker import celery_app
+from src.services.notifications import NotificationService
 
 logger = logging.getLogger(__name__)
 

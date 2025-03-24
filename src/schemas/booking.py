@@ -2,11 +2,10 @@ from typing import Optional
 from pydantic import BaseModel, Field
 from datetime import datetime, date, time
 
-import schemas as schemas
-import schemas.date
-import schemas.service
-import schemas.time
-import schemas.user
+from src.schemas.date import DateResponse
+from src.schemas.service import ServiceResponse
+from src.schemas.time import TimeResponse
+from src.schemas.user import UserResponse
 
 
 class BookingBase(BaseModel):

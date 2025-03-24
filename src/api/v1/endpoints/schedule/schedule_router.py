@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, status
-from api.v1.endpoints.schedule import ScheduleHandler
-from schemas import DateResponse, TimeResponse
+from src.api.v1.endpoints.schedule import ScheduleHandler
+from src.schemas import DateResponse, TimeResponse
 
 
 class ScheduleRouter:

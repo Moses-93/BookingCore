@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, status
-from api.v1.endpoints.feedback import FeedbackHandler
-from schemas import FeedbackResponse
+from src.api.v1.endpoints.feedback import FeedbackHandler
+from src.schemas import FeedbackResponse
 
 
 class FeedbackRouter:

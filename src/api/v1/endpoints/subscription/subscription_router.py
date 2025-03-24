@@ -1,6 +1,6 @@
 from typing import Dict, Union
 from fastapi import APIRouter, status
-from api.v1.endpoints.subscription import SubscriptionHandler
+from src.api.v1.endpoints.subscription import SubscriptionHandler
 
 
 class SubscriptionRouter:

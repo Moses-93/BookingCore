@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
-from api.v1.endpoints.user import UserHandler
-from schemas.user import UserResponse
+from src.api.v1.endpoints.user import UserHandler
+from src.schemas.user import UserResponse
 
 
 class UserRouter:

@@ -1,4 +1,4 @@
-from db.repository import CRUDRepository
+from src.db.repository import CRUDRepository
 
 
 class FeedbackService:

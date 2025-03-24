@@ -4,10 +4,10 @@ from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 import datetime
 
-from db.models.subscription import Subscription
-from db.models.user import User
-from services.notifications import notification_service
-from .dependencies import get_db, verify_user
+from src.db.models.subscription import Subscription
+from src.db.models.user import User
+from src.services.notifications import notification_service
+from .dependencies.auth import get_db, verify_user
 
 
 logger = logging.getLogger(__name__)

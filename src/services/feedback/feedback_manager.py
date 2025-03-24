@@ -1,4 +1,4 @@
-from services.feedback.feedback_service import FeedbackService
+from src.services.feedback.feedback_service import FeedbackService
 
 
 class FeedbackManager:

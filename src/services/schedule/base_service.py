@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import select, update
 
-from db.models import User
-from db.repository import CRUDRepository
-from services.user import UserService
+from src.db.models import User
+from src.db.repository import CRUDRepository
+from src.services.user import UserService
 
 
 logger = logging.getLogger(__name__)

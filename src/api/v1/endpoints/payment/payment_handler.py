@@ -3,12 +3,13 @@ import logging
 from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.dependencies import get_db, get_current_user
-from decorators.permissions import requires_role
+from src.core.dependencies.auth import get_current_user
+from src.core.dependencies.database import get_db
+from src.decorators.permissions import requires_role
 
-from db.models.user import User
-from schemas.payment import PaymentCreate
-from services.payments.wayforpay.wayforpay_manager import WayForPayManager
+from src.db.models.user import User
+from src.schemas.payment import PaymentCreate
+from src.services.payments.wayforpay.wayforpay_manager import WayForPayManager
 
 
 logger = logging.getLogger(__name__)

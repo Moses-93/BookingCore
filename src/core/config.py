@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from utils.secrets import SecretFetcher
+from src.utils.secrets import SecretFetcher
 
 
 class Settings(BaseSettings):

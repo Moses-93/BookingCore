@@ -1,4 +1,4 @@
 from sqlalchemy.orm import declarative_base
-from db.models import *
+from src.db.models import *
 
 Base = declarative_base()

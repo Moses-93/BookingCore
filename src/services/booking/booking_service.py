@@ -3,15 +3,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update
 from datetime import date, time, datetime
 from typing import List, Tuple
-from db.models import Booking, Time
-from schemas.booking import BookingCreate
-from utils.validators import ensure_resource_exists
-from tasks.reminders import BookingReminderTask
-from tasks.deactivation import DeactivateBookingTask
-from services.notifications import NotificationService
-from services.user import UserService
-from utils.encryption import encryption_service
-from db.repository import CRUDRepository
+from src.db.models import Booking, Time
+from src.schemas.booking import BookingCreate
+from src.utils.validators import ensure_resource_exists
+from src.tasks.reminders import BookingReminderTask
+from src.tasks.deactivation import DeactivateBookingTask
+from src.services.notifications import NotificationService
+from src.utils.encryption import encryption_service
+from src.db.repository import CRUDRepository
 
 REMINDER_MESSAGES = {
     "msg_to_master": "🚀 {master_name}, у тебе запис: {client_name} на {service} – {date}, {time}. Готуйся до роботи! 💼✨",

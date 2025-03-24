@@ -1,6 +1,6 @@
 import logging
-from core.dependency_factory import DependencyFactory
-from api.v1.endpoints import (
+from src.core.dependencies.dependency_factory import DependencyFactory
+from src.api.v1.endpoints import (
     ServiceHandler,
     BookingHandler,
     ScheduleHandler,

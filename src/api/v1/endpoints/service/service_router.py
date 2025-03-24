@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import APIRouter, status
-from api.v1.endpoints.service import ServiceHandler
-from schemas import ServiceResponse
+from src.api.v1.endpoints.service import ServiceHandler
+from src.schemas import ServiceResponse
 
 
 class ServiceRouter:

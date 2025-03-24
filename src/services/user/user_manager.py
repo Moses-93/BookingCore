@@ -1,4 +1,4 @@
-from services.user import UserService
+from src.services.user import UserService
 
 
 class UserManager:
