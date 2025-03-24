@@ -7,38 +7,30 @@ from src.core.dependencies.database import register_db_shutdown_event
 
 from src.core import middleware, config
 
+os.makedirs("logs", exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler("logs/logs.log"),
-        logging.StreamHandler(),
+        logging.FileHandler("logs/app.log"),
+        logging.StreamHandler(sys.stdout),
     ],
 )
 
-logger = logging.getLogger(__name__)
+app = FastAPI(title="Booking API")
 
+app.add_middleware(middleware.AuthSubscriptionMiddleware)
 
-def main() -> FastAPI:
-    """FastAPI application factory."""
+app.add_middleware(
+    middleware.TokenValidationMiddleware, api_token=config.settings.api_token
+)
+app.include_router(get_api_factory().create_main_router_v1(), prefix="/api/v1")
 
-    app = FastAPI(title="Booking API")
+register_db_shutdown_event(app)
 
-    app.add_middleware(middleware.AuthSubscriptionMiddleware)
-
-    app.add_middleware(
-        middleware.TokenValidationMiddleware, api_token=config.settings.api_token
-    )
-    app.include_router(create_main_router(), prefix="/api/v1")
-
-    return app
-
-
-app = main()
 
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    uvicorn.run("src.main:app", host="0.0.0.0", port=8000, reload=True)
