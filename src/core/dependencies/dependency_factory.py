@@ -58,8 +58,8 @@ class DependencyFactory:
         self.notification_service = NotificationService()
 
         self.booking_service = self.create_booking_service()
-        self.payment_service = self.create_payment_service()  
         self.subscription_service = self.create_subscription_service()
+        self.payment_service = self.create_payment_service()
         self.schedule_service = self.create_schedule_service()
         self.feedback_service = self.create_feedback_service()
         self.business_info_service = self.create_business_info_service()
@@ -101,7 +101,7 @@ class DependencyFactory:
         )
 
     def create_booking_manager(self) -> BookingManager:
-        
+
         return BookingManager(
             self.booking_service.service,
             self.booking_service.notification_service,
@@ -120,26 +120,26 @@ class DependencyFactory:
         return ScheduleServices(
             TimeScheduleService(
                 self.crud_repository,
-                self.user_service, 
-                DeactivateTimeTask(self.crud_repository)
+                self.user_service,
+                DeactivateTimeTask(self.crud_repository),
             ),
             DateScheduleService(
                 self.crud_repository,
-                self.user_service, 
-                DeactivateDateTask(self.crud_repository)
+                self.user_service,
+                DeactivateDateTask(self.crud_repository),
             ),
         )
 
     def create_schedule_manager(self):
-        
+
         return ScheduleManager(
             self.schedule_service.date_service, self.schedule_service.time_service
-            )
+        )
 
     def create_subscription_service(
         self,
-    ) -> ContainerSubscriptionServices:
-        return ContainerSubscriptionServices(
+    ) -> SubscriptionServices:
+        return SubscriptionServices(
             SubscriptionPlanService(self.crud_repository, self.redis_cache),
             SubscriptionService(
                 self.crud_repository, self.notification_service, self.redis_cache
@@ -148,6 +148,6 @@ class DependencyFactory:
 
     def create_subscription_manager(self) -> SubscriptionManager:
         return SubscriptionManager(
-            self.subscription_service.plan_service, 
-            self.subscription_service.subscription_service
-            )
+            self.subscription_service.plan_service,
+            self.subscription_service.subscription_service,
+        )
