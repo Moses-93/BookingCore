@@ -7,7 +7,7 @@ from src.core.dependencies.auth import get_current_user
 from src.db.models.feedback import Feedback
 from src.db.models.user import User
 from src.schemas.feedback import FeedbackCreate
-from src.decorators.permissions import requires_role
+from src.core.dependencies.auth import requires_role
 
 logger = logging.getLogger(__name__)
 

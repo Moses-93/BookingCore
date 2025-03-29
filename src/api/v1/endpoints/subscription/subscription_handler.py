@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.dependencies.auth import get_db, get_current_user
 from src.db.models.user import User
-from src.decorators.permissions import requires_role
+from src.core.dependencies.auth import requires_role
 from src.schemas import subscription as s
 
 logger = logging.getLogger(__name__)

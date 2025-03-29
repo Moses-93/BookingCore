@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.dependencies.database import get_db
 from src.core.dependencies.auth import get_current_user
 from src.db.models import User
-from src.decorators.permissions import requires_role
+from src.core.dependencies.auth import requires_role
 from src.schemas import BookingCreate
 from src.services.booking import BookingManager
 

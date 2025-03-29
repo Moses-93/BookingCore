@@ -6,7 +6,7 @@ from src.core.dependencies.database import get_db
 from src.core.dependencies.auth import get_current_user
 from src.db.models.user import User
 from src.schemas import date, time
-from src.decorators.permissions import requires_role
+from src.core.dependencies.auth import requires_role
 from src.services.schedule.schedule_manager import ScheduleManager
 
 
