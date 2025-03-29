@@ -23,16 +23,21 @@ class ServiceRepository:
     async def get_services(
         self, session: AsyncSession, user: User, master_id: Optional[int]
     ) -> List[Service]:
-        filters = {"is_active": True, "master_id": master_id}
-        if user.role == "master":
-            filters["master_id"] = user.id
-        if master_id is None:
-            master = await self.user_service.check_number_masters(user)
-            filters["master_id"] = master.id
+        filters = {"is_active": True}
 
-        return await self.crud_repository.read(
+        if master_id is not None:
+            filters["master_id"] = master_id
+        elif user.role == "master":
+            filters["master_id"] = user.id
+        else:
+            master = await self.user_service.check_number_masters(user)
+            if master:
+                filters["master_id"] = master.id
+
+        result = await self.crud_repository.read(
             select(Service).filter_by(**filters), session
         )
+        return result.scalars().all()
 
     async def create_service(
         self, session: AsyncSession, service_data: ServiceCreate, master_id: int
