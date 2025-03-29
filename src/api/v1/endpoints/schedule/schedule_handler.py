@@ -29,7 +29,7 @@ class ScheduleHandler:
         dates = await self.schedule_manager.get_dates(db, user, master_id)
         return dates
 
-    @requires_role(["master", "master"])
+    @requires_role(["master"])
     async def create_date(
         self,
         date: date.DateCreate,
@@ -61,7 +61,7 @@ class ScheduleHandler:
         times = await self.schedule_manager.get_times(db, user, master_id)
         return times
 
-    @requires_role(["master", "master"])
+    @requires_role(["master"])
     async def create_time(
         self,
         time: time.TimeCreate,
