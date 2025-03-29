@@ -38,7 +38,7 @@ class HandlerFactory:
         return SubscriptionHandler(self.deps.create_subscription_manager())
 
     def create_user_handler(self):
-        return UserHandler(self.deps.create_user_manager)
+        return UserHandler(self.deps.create_user_manager())
 
     def create_payment_handler(self):
         return PaymentHandler(self.deps.create_wfp_manager())
