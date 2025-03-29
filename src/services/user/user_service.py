@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 class UserService:
 
     def __init__(self, crud_repository: CRUDRepository):
+        logger.info(f"Call __init__ UserService for an instance {self}")
         self.crud_repository = crud_repository
 
     async def get_user(self, session: AsyncSession, filters: Dict):
@@ -39,6 +40,7 @@ class UserService:
         logger.info(f"Master add to user successfully")
 
     async def create_user(self, session: AsyncSession, user_data: UserCreate):
+        logger.info(f"Calling a service method to create a user")
         user_dump = user_data.model_dump(exclude={"master_chat_id"})
         new_user = await self.crud_repository.create(User(**user_dump), session)
         logger.info(f"User {new_user.name} created successfully")
@@ -50,7 +52,9 @@ class UserService:
         await self.crud_repository.delete(delete(User).filter_by(id=user_id), session)
 
     async def deactivate_user(self, session: AsyncSession, user_id: int):
-        await self.crud_repository.update(update(User).filter_by(id=user_id), session)
+        await self.crud_repository.update(
+            update(User).filter_by(id=user_id).values(is_active=False), session
+        )
 
     async def identify_role(self, user: User, filters: Dict) -> Dict[str, str]:
 
