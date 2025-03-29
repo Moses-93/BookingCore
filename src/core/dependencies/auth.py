@@ -48,3 +48,26 @@ async def get_current_user(request: Request) -> Optional[User]:
             detail="User not found",
         )
     return user
+
+
+def requires_role(roles: list[str]):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            user: User = kwargs.get("user")
+            if not user:
+                logger.warning(f"The user {user.chat_id} not found")
+                raise HTTPException(status_code=401, detail="User not found")
+            if user.role not in roles:
+                logger.warning(
+                    f"The user with the role {user.role} doesn't have enough permission"
+                )
+                raise HTTPException(
+                    status_code=403, detail="Forbidden: Insufficient permissions"
+                )
+
+            return await func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
