@@ -29,9 +29,9 @@ def handle_db_exceptions(operation: str):
 
     def decorator(func):
         @wraps(func)
-        async def wrapper(self, *args, **kwargs):
+        async def wrapper(*args, **kwargs):
             try:
-                return await func(self, *args, **kwargs)
+                return await func(*args, **kwargs)
             except IntegrityError as e:
                 await args[1].rollback()
                 logger.error(f"Integrity error during {operation}: {e}", exc_info=True)

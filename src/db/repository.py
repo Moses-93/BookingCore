@@ -12,11 +12,10 @@ logger = logging.getLogger(__name__)
 
 class CRUDRepository(BaseCRUD):
 
+    @staticmethod
     @handle_db_exceptions("create")
-    async def create(
-        self, query: DeclarativeBase, session: AsyncSession
-    ) -> DeclarativeBase:
-        """Creates a new record in the database.
+    async def create(query: DeclarativeBase, session: AsyncSession) -> DeclarativeBase:
+        """Creates a new entry in the database.
 
         Args:
             query (DeclarativeBase): An instance of a SQLAlchemy model
@@ -30,9 +29,10 @@ class CRUDRepository(BaseCRUD):
         await session.refresh(query)
         return query
 
+    @staticmethod
     @handle_db_exceptions("read")
     async def read(
-        self, query: Select, session: AsyncSession, single: bool = False
+        query: Select, session: AsyncSession, single: bool = False
     ) -> Union[Optional[DeclarativeBase], List[DeclarativeBase]]:
         """Executes a SELECT query to the database
 
@@ -47,8 +47,9 @@ class CRUDRepository(BaseCRUD):
         result = await session.execute(query)
         return result.scalars().first() if single else result.scalars().all()
 
+    @staticmethod
     @handle_db_exceptions("update")
-    async def update(self, query: Update, session: AsyncSession) -> bool:
+    async def update(query: Update, session: AsyncSession) -> bool:
         """Executes a UPDATE query to the database
 
         Args:
@@ -62,8 +63,9 @@ class CRUDRepository(BaseCRUD):
         await session.commit()
         return result.rowcount > 0
 
+    @staticmethod
     @handle_db_exceptions("delete")
-    async def delete(self, query: Delete, session: AsyncSession) -> bool:
+    async def delete(query: Delete, session: AsyncSession) -> bool:
         """Executes a UPDATE query to the database
 
         Args:
