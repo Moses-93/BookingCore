@@ -9,7 +9,7 @@ from src.utils.redis_cache import RedisCacheFactory
 from src.services.user import UserService
 
 
-class ServiceRepository:
+class ServiceHandler:
     def __init__(
         self,
         crud_repository: CRUDRepository,
